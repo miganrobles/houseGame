@@ -46,7 +46,8 @@ public class Game
     }
     
     /**
-     * 
+     *  Comienza el juego desde el principio cuando te pilla tu padre
+     *  si te quedan más intentos
      */
     private void masIntentos()
     {
@@ -135,6 +136,13 @@ public class Game
         while (!finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+            
+            if (numeroIntentos == 0) {
+                finished = true;
+                System.out.println();
+                System.out.println("Te pillé de nuevo");
+                System.out.println("Se te acabaron las oprotunidades, te quedas sin ¡¡ ESPICHA !! todo el més");
+            }
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
@@ -244,6 +252,7 @@ public class Game
         }
         else if ((nextRoom.getDescription().contains("Donde te crees que vas, arranca para la cama echando mistos"))) {
             numeroIntentos--;// Te pilla tu padre
+            
             if (numeroIntentos > 0) { // Si te quedan más intentos
                 System.out.println("Te encuentras " + nextRoom.getDescription());
                 masIntentos();

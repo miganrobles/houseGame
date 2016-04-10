@@ -44,6 +44,37 @@ public class Game
         description += "\nDonde te crees que vas, arranca para la cama echando mistos";
         rooms[habitacionColocamosAlPadre].setDescription(description);
     }
+    
+    /**
+     * 
+     */
+    private void masIntentos()
+    {
+        System.out.println();
+        System.out.println();
+        System.out.println("Te quedan " + numeroIntentos + " intentos");
+        System.out.println("Comienzas de nuevo");
+        System.out.println();
+        System.out.println();
+        
+        createRooms();// Comienzas de nuevo
+        System.out.println("Te encuentras " + currentRoom.getDescription());
+        System.out.print("Salidas: ");
+        
+        if(currentRoom.northExit != null) {
+            System.out.print("north ");
+        }
+        if(currentRoom.eastExit != null) {
+            System.out.print("east ");
+        }
+        if(currentRoom.southExit != null) {
+            System.out.print("south ");
+        }
+        if(currentRoom.westExit != null) {
+            System.out.print("west ");
+        }
+        System.out.println();
+    }
 
     /**
      * Create all the rooms and link their exits together.
@@ -210,6 +241,13 @@ public class Game
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
+        }
+        else if ((nextRoom.getDescription().contains("Donde te crees que vas, arranca para la cama echando mistos"))) {
+            numeroIntentos--;// Te pilla tu padre
+            if (numeroIntentos > 0) { // Si te quedan más intentos
+                System.out.println("Te encuentras " + nextRoom.getDescription());
+                masIntentos();
+            }
         }
         else {
             currentRoom = nextRoom;

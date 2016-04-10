@@ -58,5 +58,12 @@ public class Room
     {
         return description;
     }
-
+    
+    /**
+     * Permite cambiar la descripcion de la habitación 
+     */
+    public void setDescription(String newDescription)
+    {
+        description = newDescription;
+    }
 }

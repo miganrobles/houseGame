@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -19,7 +21,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-        
+    private int numeroIntentos;   
     /**
      * Create the game and initialise its internal map.
      */
@@ -27,6 +29,20 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        numeroIntentos = 2;
+    }
+    
+    /**
+     * Situa al padre en una habitación cogida al azahar
+     */
+    private void colocarPadre(Room[] rooms)
+    {
+        Random aleatorio = new Random();
+        int habitacionColocamosAlPadre = aleatorio.nextInt(rooms.length);
+        String[] descriptionTroceada = rooms[habitacionColocamosAlPadre].getDescription().split(","); 
+        String description = descriptionTroceada[0];
+        description += "\nDonde te crees que vas, arranca para la cama echando mistos";
+        rooms[habitacionColocamosAlPadre].setDescription(description);
     }
 
     /**
@@ -46,9 +62,21 @@ public class Game
         roomPadres = new Room("en la habitación de tus padres, pero ojo que el viejo está de guardia");
         roomHermano = new Room("en la habitación de tu hermano el llorón, que no se despierte que la lias");
         
-        String tuPadre = "te pillé, arranca para la cama echando mistos";
-        
         roomHijo = new Room("echándote gomina para el pelo, hoy triunfas");
+        
+        // creamos un array de habitaciones para colocar al padre en una al azahar
+        Room[] habitacionesPuedeEstarPadre = new Room[7]; 
+        
+        habitacionesPuedeEstarPadre[0] = salon;
+        habitacionesPuedeEstarPadre[1] = cocina;
+        habitacionesPuedeEstarPadre[2] = salaDeInvitados;
+        habitacionesPuedeEstarPadre[3] = roomHermana;
+        habitacionesPuedeEstarPadre[4] = roomPadres;
+        habitacionesPuedeEstarPadre[5] = roomHermano;
+        habitacionesPuedeEstarPadre[6] = salida;
+        
+        colocarPadre(habitacionesPuedeEstarPadre);        
+        
         // initialise room exits
         salida.setExits(salaDeInvitados, salon, null, null);
         salon.setExits(cocina, null, null, salida);

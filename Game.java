@@ -31,7 +31,7 @@ public class Game
         parser = new Parser();
         numeroIntentos = 2;
     }
-    
+
     /**
      * Situa al padre en una habitación cogida al azahar
      */
@@ -44,7 +44,7 @@ public class Game
         description += "\nDonde te crees que vas, arranca para la cama echando mistos";
         rooms[habitacionColocamosAlPadre].setDescription(description);
     }
-    
+
     /**
      *  Comienza el juego desde el principio cuando te pilla tu padre
      *  si te quedan más intentos
@@ -57,11 +57,11 @@ public class Game
         System.out.println("Comienzas de nuevo");
         System.out.println();
         System.out.println();
-        
+
         createRooms();// Comienzas de nuevo
         System.out.println("Te encuentras " + currentRoom.getDescription());
         System.out.print("Salidas: ");
-        
+
         if(currentRoom.northExit != null) {
             System.out.print("north ");
         }
@@ -84,7 +84,7 @@ public class Game
     {
         Room salida, salon, cocina, salaDeInvitados, roomHermana, roomPadres,
         roomHijo, roomHermano;
-      
+
         // create the rooms
         salida = new Room("en la puerta, ya puedes salir de parranda");
         salon = new Room("en el salón, la noche es tuya");
@@ -93,12 +93,12 @@ public class Game
         roomHermana = new Room("en la habitación de tu hermana, no hagas ruido que está durmiendo");
         roomPadres = new Room("en la habitación de tus padres, pero ojo que el viejo está de guardia");
         roomHermano = new Room("en la habitación de tu hermano el llorón, que no se despierte que la lias");
-        
+
         roomHijo = new Room("echándote gomina para el pelo, hoy triunfas");
-        
+
         // creamos un array de habitaciones para colocar al padre en una al azahar
         Room[] habitacionesPuedeEstarPadre = new Room[7]; 
-        
+
         habitacionesPuedeEstarPadre[0] = salon;
         habitacionesPuedeEstarPadre[1] = cocina;
         habitacionesPuedeEstarPadre[2] = salaDeInvitados;
@@ -106,9 +106,9 @@ public class Game
         habitacionesPuedeEstarPadre[4] = roomPadres;
         habitacionesPuedeEstarPadre[5] = roomHermano;
         habitacionesPuedeEstarPadre[6] = salida;
-        
+
         colocarPadre(habitacionesPuedeEstarPadre);        
-        
+
         // initialise room exits
         salida.setExits(salaDeInvitados, salon, null, null);
         salon.setExits(cocina, null, null, salida);
@@ -131,17 +131,13 @@ public class Game
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+
         boolean finished = false;
         while (!finished) {
             Command command = parser.getCommand();
-            finished = processCommand(command);
-            
-            if (numeroIntentos == 0) {
+            finished = processCommand(command);         
+            if (numeroIntentos < 1) {
                 finished = true;
-                System.out.println();
-                System.out.println("Te pillé de nuevo");
-                System.out.println("Se te acabaron las oprotunidades, te quedas sin ¡¡ ESPICHA !! todo el més");
             }
         }
         System.out.println("Thank you for playing.  Good bye.");
@@ -251,12 +247,22 @@ public class Game
             System.out.println("There is no door!");
         }
         else if ((nextRoom.getDescription().contains("Donde te crees que vas, arranca para la cama echando mistos"))) {
-            numeroIntentos--;// Te pilla tu padre
-            
+            numeroIntentos--;// Te pilla tu padre          
             if (numeroIntentos > 0) { // Si te quedan más intentos
                 System.out.println("Te encuentras " + nextRoom.getDescription());
                 masIntentos();
             }
+            else {
+                System.out.println();
+                System.out.println("Te pillé de nuevo");
+                System.out.println("Se te acabaron las oprotunidades, te quedas sin ¡¡ ESPICHA !! todo el més");
+            }
+        }
+        else if (nextRoom.getDescription().equals("en la puerta, ya puedes salir de parranda")) {
+            numeroIntentos = 0;
+            System.out.println("Te encuentras " + nextRoom.getDescription());
+            System.out.println();
+            System.out.println("Pásalo en grande que la noche es joven");
         }
         else {
             currentRoom = nextRoom;

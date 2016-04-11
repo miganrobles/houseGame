@@ -71,15 +71,15 @@ public class Game
         roomHijo, roomHermano;
 
         // create the rooms
-        salida = new Room("en la puerta, ya puedes salir de parranda");
-        salon = new Room("en el salón, la noche es tuya");
-        cocina = new Room("en la cocina, coge los hielos");
-        salaDeInvitados = new Room("en la sala de invitados, valla noche que te espera");
-        roomHermana = new Room("en la habitación de tu hermana, no hagas ruido que está durmiendo");
-        roomPadres = new Room("en la habitación de tus padres, pero ojo que el viejo está de guardia");
-        roomHermano = new Room("en la habitación de tu hermano el llorón, que no se despierte que la lias");
+        salida = new Room("la puerta, ya puedes salir de parranda");
+        salon = new Room("el salón, la noche es tuya");
+        cocina = new Room("la cocina, coge los hielos");
+        salaDeInvitados = new Room("la sala de invitados, valla noche que te espera");
+        roomHermana = new Room("la habitación de tu hermana, no hagas ruido que está durmiendo");
+        roomPadres = new Room("la habitación de tus padres, pero ojo que el viejo está de guardia");
+        roomHermano = new Room("la habitación de tu hermano el llorón, que no se despierte que la lias");
 
-        roomHijo = new Room("echándote gomina para el pelo, hoy triunfas");
+        roomHijo = new Room("tu habitación echándote gomina para el pelo");
 
         // creamos un array de habitaciones para colocar al padre en una al azahar
         Room[] habitacionesPuedeEstarPadre = new Room[7]; 
@@ -121,14 +121,14 @@ public class Game
 
         roomHermana.setExit(n, roomPadres);
         roomHermana.setExit(e, salaDeInvitados);
-        
+
         roomPadres.setExit(e, roomHijo);
         roomPadres.setExit(s, roomHermana);
         roomPadres.setExit(sE, salaDeInvitados);
-        
+
         roomHermano.setExit(s, cocina);
         roomHermano.setExit(w, roomHijo);
-        
+
         roomHijo.setExit(e, roomHermano);
         roomHijo.setExit(s, salaDeInvitados);
         roomHijo.setExit(w, roomPadres);
@@ -238,7 +238,7 @@ public class Game
         else if ((nextRoom.getDescription().contains("Donde te crees que vas, arranca para la cama echando mistos"))) {
             numeroIntentos--;// Te pilla tu padre          
             if (numeroIntentos > 0) { // Si te quedan más intentos
-                System.out.println("Te encuentras " + nextRoom.getDescription());
+                System.out.println("Te encuentras en " + nextRoom.getDescription());
                 masIntentos();
             }
             else {
@@ -247,9 +247,9 @@ public class Game
                 System.out.println("Se te acabaron las oprotunidades, te quedas sin ¡¡ ESPICHA !! todo el més");
             }
         }
-        else if (nextRoom.getDescription().equals("en la puerta, ya puedes salir de parranda")) {
+        else if (nextRoom.getDescription().equals("la puerta, ya puedes salir de parranda")) {
             numeroIntentos = 0;
-            System.out.println("Te encuentras " + nextRoom.getDescription());
+            System.out.println("Te encuentras en " + nextRoom.getDescription());
             System.out.println();
             System.out.println("Pásalo en grande que la noche es joven");
         }
@@ -276,13 +276,11 @@ public class Game
     }
 
     /**
-     * Muestra la habitación en la que te encuentras 
+     * Muestra la información de la habitación en la que te encuentras 
      * y las posibles salidas que se pueden tomar
      */
     private void printLocationInfo()
     {
-        System.out.println("Te encuentras " + currentRoom.getDescription());
-        System.out.print(currentRoom.getExitString());
-        System.out.println();
+        System.out.println(currentRoom.getLongDescription());
     }
 }

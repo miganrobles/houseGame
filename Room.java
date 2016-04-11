@@ -84,4 +84,15 @@ public class Room
         }
         return salidasPosibles;
     }
+
+    /**
+     * Return a long description of this room, of the form:
+     *     You are in the 'name of room'
+     *     Exits: north west southwest
+     * @return A description of the room, including exits.
+     */
+    public String getLongDescription()
+    {
+        return "Te encuentras en " + description + "\n" + getExitString() + "\n";
+    }
 }

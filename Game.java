@@ -95,14 +95,14 @@ public class Game
         colocarPadre(habitacionesPuedeEstarPadre);        
 
         // initialise room exits
-        salida.setExits(salaDeInvitados, salon, null, null);
-        salon.setExits(cocina, null, null, salida);
-        cocina.setExits(roomHermano, null, salon, salaDeInvitados);
-        salaDeInvitados.setExits(roomHijo, cocina, salida, roomHermana);
-        roomHermana.setExits(roomPadres, salaDeInvitados, null, null);
-        roomPadres.setExits(null, roomHijo, roomHermana, null);
-        roomHijo.setExits(null, roomHermano, salaDeInvitados, roomPadres);
-        roomHermano.setExits(null, null, cocina, roomHijo);
+        salida.setExits(salaDeInvitados, salon, null, null, null);
+        salon.setExits(cocina, null, null, salida, null);
+        cocina.setExits(roomHermano, null, salon, salaDeInvitados, null);
+        salaDeInvitados.setExits(roomHijo, cocina, salida, roomHermana, salon);
+        roomHermana.setExits(roomPadres, salaDeInvitados, null, null, null);
+        roomPadres.setExits(null, roomHijo, roomHermana, null, salaDeInvitados);
+        roomHijo.setExits(null, roomHermano, salaDeInvitados, roomPadres,cocina);
+        roomHermano.setExits(null, null, cocina, roomHijo, null);
 
         currentRoom = roomHijo;  // start game outside
     }
@@ -213,6 +213,9 @@ public class Game
         if(direction.equals("west")) {
             nextRoom = currentRoom.westExit;
         }
+        if (direction.equals("southEast")) {
+            nextRoom = currentRoom.southEastExit;
+        }
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
@@ -276,6 +279,9 @@ public class Game
         }
         if(currentRoom.westExit != null) {
             System.out.print("west ");
+        }
+        if(currentRoom.southEastExit != null) {
+            System.out.println("southEast");
         }
         System.out.println();
     }

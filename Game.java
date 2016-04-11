@@ -95,14 +95,14 @@ public class Game
         colocarPadre(habitacionesPuedeEstarPadre);        
 
         // initialise room exits
-        salida.setExits(salaDeInvitados, salon, null, null, null);
-        salon.setExits(cocina, null, null, salida, null);
-        cocina.setExits(roomHermano, null, salon, salaDeInvitados, null);
-        salaDeInvitados.setExits(roomHijo, cocina, salida, roomHermana, salon);
-        roomHermana.setExits(roomPadres, salaDeInvitados, null, null, null);
-        roomPadres.setExits(null, roomHijo, roomHermana, null, salaDeInvitados);
-        roomHijo.setExits(null, roomHermano, salaDeInvitados, roomPadres,cocina);
-        roomHermano.setExits(null, null, cocina, roomHijo, null);
+        salida.setExits(salaDeInvitados, salon, null, null, null, null);
+        salon.setExits(cocina, null, null, salida, null, salaDeInvitados);
+        cocina.setExits(roomHermano, null, salon, salaDeInvitados, null, roomHijo);
+        salaDeInvitados.setExits(roomHijo, cocina, salida, roomHermana, salon, roomPadres);
+        roomHermana.setExits(roomPadres, salaDeInvitados, null, null, null, null);
+        roomPadres.setExits(null, roomHijo, roomHermana, null, salaDeInvitados, null);
+        roomHijo.setExits(null, roomHermano, salaDeInvitados, roomPadres,cocina, null);
+        roomHermano.setExits(null, null, cocina, roomHijo, null, null);
 
         currentRoom = roomHijo;  // start game outside
     }

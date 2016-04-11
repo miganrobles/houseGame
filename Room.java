@@ -15,11 +15,11 @@
 public class Room 
 {
     public String description;
-    public Room northExit;
-    public Room southExit;
-    public Room eastExit;
-    public Room westExit;
-    public Room southEastExit;
+    private Room northExit;
+    private Room southExit;
+    private Room eastExit;
+    private Room westExit;
+    private Room southEastExit;
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -67,5 +67,30 @@ public class Room
     public void setDescription(String newDescription)
     {
         description = newDescription;
+    }
+
+    /**
+     * Toma como parámetro una cadena que representa una dirección 
+     * y devuelva el objeto de la clase Room
+     */
+    public Room getExit(String exit)
+    {
+        Room exitRoom = null;
+        if (exit.equals("north")) {
+            exitRoom = northExit;
+        }
+        else if (exit.equals("south")) {
+            exitRoom = southExit;
+        }
+        else if (exit.equals("east")) {
+            exitRoom = eastExit;
+        }
+        else if (exit.equals("west")) {
+            exitRoom = westExit;
+        }
+        else if (exit.equals("southEast")) {
+            exitRoom = southEastExit;
+        }
+        return exitRoom;
     }
 }

@@ -93,16 +93,46 @@ public class Game
         habitacionesPuedeEstarPadre[6] = salida;
 
         colocarPadre(habitacionesPuedeEstarPadre);        
-
+        final String n = "north";
+        final String e = "east";
+        final String s = "south";
+        final String w = "west";
+        final String sE = "southEast";
+        final String nW = "northWest";
         // initialise room exits
-        salida.setExits(salaDeInvitados, salon, null, null, null, null);
-        salon.setExits(cocina, null, null, salida, null, salaDeInvitados);
-        cocina.setExits(roomHermano, null, salon, salaDeInvitados, null, roomHijo);
-        salaDeInvitados.setExits(roomHijo, cocina, salida, roomHermana, salon, roomPadres);
-        roomHermana.setExits(roomPadres, salaDeInvitados, null, null, null, null);
-        roomPadres.setExits(null, roomHijo, roomHermana, null, salaDeInvitados, null);
-        roomHijo.setExits(null, roomHermano, salaDeInvitados, roomPadres,cocina, null);
-        roomHermano.setExits(null, null, cocina, roomHijo, null, null);
+        salida.setExit(n, salaDeInvitados);
+        salida.setExit(e, salon);
+
+        salon.setExit(n, cocina);
+        salon.setExit(w, salida);
+        salon.setExit(nW, salaDeInvitados);
+
+        cocina.setExit(n, roomHermano);
+        cocina.setExit(s, salon);
+        cocina.setExit(w, salaDeInvitados);
+        cocina.setExit(nW, roomHijo);
+
+        salaDeInvitados.setExit(n,roomHijo );
+        salaDeInvitados.setExit(e, cocina);
+        salaDeInvitados.setExit(s, salida);
+        salaDeInvitados.setExit(w, roomHermana);
+        salaDeInvitados.setExit(sE, salon);
+        salaDeInvitados.setExit(nW, roomPadres);
+
+        roomHermana.setExit(n, roomPadres);
+        roomHermana.setExit(e, salaDeInvitados);
+        
+        roomPadres.setExit(e, roomHijo);
+        roomPadres.setExit(s, roomHermana);
+        roomPadres.setExit(sE, salaDeInvitados);
+        
+        roomHermano.setExit(s, cocina);
+        roomHermano.setExit(w, roomHijo);
+        
+        roomHijo.setExit(e, roomHermano);
+        roomHijo.setExit(s, salaDeInvitados);
+        roomHijo.setExit(w, roomPadres);
+        roomHijo.setExit(sE, cocina);
 
         currentRoom = roomHijo;  // start game outside
     }
@@ -201,7 +231,6 @@ public class Game
 
         // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
-        
 
         if (nextRoom == null) {
             System.out.println("There is no door!");

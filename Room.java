@@ -35,25 +35,12 @@ public class Room
     /**
      * Define the exits of this room.  Every direction either leads
      * to another room or is null (no exit there).
-     * @param north The north exit.
-     * @param east The east east.
-     * @param south The south exit.
-     * @param west The west exit.
+     * @param exit define la direccion de salida
+     * @param room define la habitacion a la que se accede en esa dirección.
      */
-    public void setExits(Room north, Room east, Room south, Room west, Room southEast, Room northWest) 
+    public void setExit(String direccion, Room room) 
     {
-        if(north != null)
-            salidas.put("north", north);
-        if(east != null)
-            salidas.put("east", east);
-        if(south != null)
-            salidas.put("south", south);
-        if(west != null)
-            salidas.put("west", west);
-        if (southEast != null)
-            salidas.put("southEast", southEast);
-        if (northWest != null)
-            salidas.put("nortWest", northWest);
+        salidas.put(direccion, room);
     }
 
     /**
@@ -93,9 +80,7 @@ public class Room
         Iterator it = salidas.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry e = (Map.Entry)it.next();
-            if (e.getValue() != null) {
-                salidasPosibles += e.getKey() + " ";
-            }
+            salidasPosibles += e.getKey() + " ";            
         }
         return salidasPosibles;
     }

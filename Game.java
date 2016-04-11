@@ -121,7 +121,7 @@ public class Game
         while (!finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);         
-            if (numeroIntentos < 1) {
+            if (numeroIntentos == 0) {
                 finished = true;
             }
         }

@@ -211,13 +211,12 @@ public class Game
      */
     private void printHelp() 
     {
-        //parser.muestraComandos();
-        
         System.out.println("You are lost. You are alone. You wander");
         System.out.println("the party is in the university.");
         System.out.println();
-        CommandWords commands = parser.getCommands();
-        commands.showAll();
+        //parser.muestraComandos();
+        //CommandWords commands = parser.getCommands();
+        parser.muestraComandos();
         
     }
 

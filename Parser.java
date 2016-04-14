@@ -70,4 +70,12 @@ public class Parser
     {
         return commands;
     }
+    
+    /**
+     *  Imprime por pantalla todos los comandos disponibles 
+     */
+    public void muestraComandos()
+    {
+        commands.showAll();
+    }
 }

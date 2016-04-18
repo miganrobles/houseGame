@@ -21,7 +21,8 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-    private int numeroIntentos;   
+    private int numeroIntentos;
+    private Room backRoom;
     /**
      * Create the game and initialise its internal map.
      */
@@ -30,6 +31,7 @@ public class Game
         createRooms();
         parser = new Parser();
         numeroIntentos = 2;
+        backRoom = null;
     }
 
     /**
@@ -205,6 +207,17 @@ public class Game
         else if (commandWord.equals("eat")) {
             System.out.println("You have eaten now and you are not hungry any more");
         }
+        else if (commandWord.equals("back")) {
+            if ( backRoom == null) {
+                System.out.println("No es posible volver a la localización anterior");
+                System.out.println();
+            }
+            else {
+                currentRoom = backRoom;
+                printLocationInfo();
+                backRoom = null;
+            }
+        }
         return wantToQuit;
     }
 
@@ -223,7 +236,7 @@ public class Game
         //parser.muestraComandos();
         //CommandWords commands = parser.getCommands();
         parser.muestraComandos();
-        
+
     }
 
     /** 
@@ -265,6 +278,7 @@ public class Game
             System.out.println("Pásalo en grande que la noche es joven");
         }
         else {
+            backRoom = currentRoom;
             currentRoom = nextRoom;
             printLocationInfo();
         }

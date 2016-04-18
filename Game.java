@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Stack;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -22,7 +23,8 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private int numeroIntentos;
-    private Room backRoom;
+    //private Room backRoom;
+    private Stack<Room> pila;
     /**
      * Create the game and initialise its internal map.
      */
@@ -31,7 +33,8 @@ public class Game
         createRooms();
         parser = new Parser();
         numeroIntentos = 2;
-        backRoom = null;
+        //backRoom = null;
+        pila = new Stack<>();
     }
 
     /**
@@ -208,14 +211,12 @@ public class Game
             System.out.println("You have eaten now and you are not hungry any more");
         }
         else if (commandWord.equals("back")) {
-            if ( backRoom == null) {
+            if (pila.empty()) {
                 System.out.println("No es posible volver a la localización anterior");
-                System.out.println();
             }
             else {
-                currentRoom = backRoom;
+                currentRoom = pila.pop();
                 printLocationInfo();
-                backRoom = null;
             }
         }
         return wantToQuit;
@@ -278,7 +279,7 @@ public class Game
             System.out.println("Pásalo en grande que la noche es joven");
         }
         else {
-            backRoom = currentRoom;
+            pila.push(currentRoom);
             currentRoom = nextRoom;
             printLocationInfo();
         }

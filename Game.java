@@ -71,15 +71,19 @@ public class Game
         roomHijo, roomHermano;
 
         // create the rooms
-        salida = new Room("la puerta, ya puedes salir de parranda","una alfombra", 1);
-        salon = new Room("el salón, la noche es tuya", "una mesa de salón",10);
-        cocina = new Room("la cocina, coge los hielos","los hielos", 1);
-        salaDeInvitados = new Room("la sala de invitados, valla noche que te espera", "un paraguero", 0.5F);
-        roomHermana = new Room("la habitación de tu hermana, no hagas ruido que está durmiendo", "una mesita de noche" , 10);
-        roomPadres = new Room("la habitación de tus padres, pero ojo que el viejo está de guardia", "una comoda" , 20);
-        roomHermano = new Room("la habitación de tu hermano el llorón, que no se despierte que la lias", "una cuna", 15);
+        salida = new Room("la puerta, ya puedes salir de parranda");
+        salida.addItem(new Item("una mesa de salón",10));
+        salon = new Room("el salón, la noche es tuya");
+        salon.addItem(new Item("un paraguero", 0.5F));
+        salon.addItem(new Item("una mesita de noche" , 10));
+        cocina = new Room("la cocina, coge los hielos");
+        cocina.addItem(new Item("los hielos", 1));
+        salaDeInvitados = new Room("la sala de invitados, valla noche que te espera");
+        roomHermana = new Room("la habitación de tu hermana, no hagas ruido que está durmiendo");
+        roomPadres = new Room("la habitación de tus padres, pero ojo que el viejo está de guardia");
+        roomHermano = new Room("la habitación de tu hermano el llorón, que no se despierte que la lias");
 
-        roomHijo = new Room("tu habitación echándote gomina para el pelo", "equipo de música", 10);
+        roomHijo = new Room("tu habitación echándote gomina para el pelo");
 
         // creamos un array de habitaciones para colocar al padre en una al azahar
         Room[] habitacionesPuedeEstarPadre = new Room[7]; 

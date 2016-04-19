@@ -55,14 +55,6 @@ public class Room
     }
 
     /**
-     * Permite cambiar la descripcion de la habitación 
-     */
-    public void setDescription(String newDescription)
-    {
-        description = newDescription;
-    }
-
-    /**
      * Toma como parámetro una cadena que representa una dirección 
      * y devuelva el objeto de la clase Room
      */

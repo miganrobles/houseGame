@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ArrayList;
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -96,6 +97,9 @@ public class Room
         + descripcionItems + getExitString() + "\n";
     }
     
+    /**
+     * Añade items a la habitación
+     */
     public void addItem(Item item)
     {
         items.add(item);

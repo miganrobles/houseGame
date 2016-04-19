@@ -21,8 +21,8 @@ import java.util.Stack;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
     private Stack<Room> backRooms;
+    private Player player;
     /**
      * Create the game and initialise its internal map.
      */
@@ -32,7 +32,7 @@ public class Game
         parser = new Parser();
         backRooms = new Stack<>();
     }
-  
+
     /**
      * Create all the rooms and link their exits together.
      */
@@ -40,8 +40,8 @@ public class Game
     {
         Room salida, salon, cocina, salaDeInvitados, roomHermana, roomPadres,
         roomHijo, roomHermano;
-
-        // create the rooms
+     
+            // create the rooms
         salida = new Room("la salida");
         salida.addItem(new Item("un paraguas",1));
         salon = new Room("el salón");
@@ -57,7 +57,7 @@ public class Game
 
         roomHijo = new Room("tu habitación");
         roomHijo.addItem(new Item("la cartera", 0.5F));
-     
+
         final String n = "north";
         final String e = "east";
         final String s = "south";
@@ -98,8 +98,8 @@ public class Game
         roomHijo.setExit(s, salaDeInvitados);
         roomHijo.setExit(w, roomPadres);
         roomHijo.setExit(sE, cocina);
-        
-        currentRoom = roomHijo;  // start game outside
+
+        player = new Player(roomHijo);
     }
 
     /**
@@ -161,21 +161,19 @@ public class Game
             printLocationInfo();
         }
         else if (commandWord.equals("eat")) {
-            System.out.println("You have eaten now and you are not hungry any more");
+            System.out.println("You have eaten now and you are not hungry any more\n");
         }
         else if (commandWord.equals("back")) {
             if (backRooms.empty()) {
-                System.out.println("No es posible volver a la localización anterior");
+                System.out.println("No es posible volver a la localización anterior\n");
             }
             else {
-                currentRoom = backRooms.pop();
+                player.setCurrentRoom(backRooms.pop());
                 printLocationInfo();
             }
         }
         return wantToQuit;
     }
-
-    // implementations of user commands:
 
     /**
      * Print out some help information.
@@ -187,8 +185,6 @@ public class Game
         System.out.println("You are lost. You are alone. You wander");
         System.out.println("the party is in the university.");
         System.out.println();
-        //parser.muestraComandos();
-        //CommandWords commands = parser.getCommands();
         parser.muestraComandos();
 
     }
@@ -208,14 +204,15 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        Room actualRoom = player.getCurrentRoom();
+        Room nextRoom = actualRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
-            backRooms.push(currentRoom);
-            currentRoom = nextRoom;
+            backRooms.push(actualRoom);
+            player.setCurrentRoom(nextRoom);
             printLocationInfo();
         }
     }
@@ -242,6 +239,6 @@ public class Game
      */
     private void printLocationInfo()
     {
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(player.getCurrentRoom().getLongDescription());
     }
 }

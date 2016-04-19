@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ArrayList;
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -55,14 +56,6 @@ public class Room
     }
 
     /**
-     * Permite cambiar la descripcion de la habitación 
-     */
-    public void setDescription(String newDescription)
-    {
-        description = newDescription;
-    }
-
-    /**
      * Toma como parámetro una cadena que representa una dirección 
      * y devuelva el objeto de la clase Room
      */
@@ -104,6 +97,9 @@ public class Room
         + descripcionItems + getExitString() + "\n";
     }
     
+    /**
+     * Añade items a la habitación
+     */
     public void addItem(Item item)
     {
         items.add(item);

@@ -106,6 +106,14 @@ public class Room
     }
     
     /**
+     * Elimina el item cuando es cojido
+     */
+    public void removeItem(Item item)
+    {
+        items.remove(item);
+    }
+    
+    /**
      * Devuelve el item si se encuentra en la habitación
      */
     public Item getItem(String nombreItem)

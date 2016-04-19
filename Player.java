@@ -12,12 +12,15 @@ public class Player
     private Room currentRoom;
     // Guarda los items que va cojiendo el jugador
     private ArrayList<Item> itemsCojidos;
+    // Peso que puede transportar el jugador
+    private float pesoPuedeLlevar;
 
     /**
      * Constructor for objects of class Player
      */
     public Player(Room currentRoom)
     {
+        pesoPuedeLlevar = 10;
         this.currentRoom = currentRoom;
     }
 
@@ -35,6 +38,23 @@ public class Player
     public void setCurrentRoom(Room newRoom)
     {
         currentRoom = newRoom;
+    }
+    
+    /**
+     * Comprueba si puede cojer el item según su peso
+     */
+    public void puedeConItem(Item item)
+    {
+        float pesoItem = item.getPeso();
+        if (pesoItem <= pesoPuedeLlevar) {
+            pesoPuedeLlevar -= pesoItem;
+            cojeItem(item);
+            currentRoom.removeItem(item);
+        }
+        else {
+            System.out.println("El objeto pesa " + pesoItem + " y solo puede cojer " + pesoPuedeLlevar);
+            System.out.println("Si quiere cojer este objeto, debe de posar otro antes para que pueda con él");
+        }
     }
 
     /**

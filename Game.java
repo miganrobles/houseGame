@@ -1,5 +1,8 @@
 import java.util.Random;
 import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Arrays;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -39,31 +42,24 @@ public class Game
     private void createRooms()
     {
         Room salida, salon, cocina, salaDeInvitados, roomHermana, roomPadres,
-        roomHijo, roomHermano;
-     
-            // create the rooms
-        salida = new Room("la salida");
-        salida.addItem(new Item("un paraguas",1));
-        salon = new Room("el salón");
-        salon.addItem(new Item("una botella de coca-cola", 1));
-        salon.addItem(new Item("una bolsa con botellas" , 10));
-        cocina = new Room("la cocina");
-        cocina.addItem(new Item("los hielos", 1));
-        salaDeInvitados = new Room("la sala de invitados");
-        salaDeInvitados.addItem(new Item("una bolsa con bocadillos", 7));
-        roomHermana = new Room("la habitación de tu hermana");
-        roomPadres = new Room("la habitación de tus padres");
-        roomHermano = new Room("la habitación de tu hermano el llorón");
+        roomHijo, roomHermano;  
 
-        roomHijo = new Room("tu habitación");
-        roomHijo.addItem(new Item("la cartera", 0.5F));
+        // creamos las habitaciones y las guardamos en un ArrayList
+        ArrayList<Room> rooms = new ArrayList<>();    
 
-        final String n = "north";
-        final String e = "east";
-        final String s = "south";
-        final String w = "west";
-        final String sE = "southEast";
-        final String nW = "northWest";
+        salida = new Room("la salida"); rooms.add(salida);       
+        salon = new Room("el salón"); rooms.add(salon);        
+        cocina = new Room("la cocina"); rooms.add(cocina);       
+        salaDeInvitados = new Room("la sala de invitados"); rooms.add(salaDeInvitados);       
+        roomHermana = new Room("la habitación de tu hermana"); rooms.add(roomHermana);        
+        roomPadres = new Room("la habitación de tus padres"); rooms.add(roomPadres);        
+        roomHermano = new Room("la habitación de tu hermano el llorón"); rooms.add(roomHermano); 
+        roomHijo = new Room("tu habitación"); rooms.add(roomHijo); 
+
+        // Establecemos las salidas que tiene cada habitación
+        final String n = "north", e = "east", s = "south", w = "west",
+        sE = "southEast", nW = "northWest";
+
         // initialise room exits
         salida.setExit(n, salaDeInvitados);
         salida.setExit(e, salon);
@@ -99,7 +95,22 @@ public class Game
         roomHijo.setExit(w, roomPadres);
         roomHijo.setExit(sE, cocina);
 
+        // Creamos el jugados y lo situamos en su habitación
         player = new Player(roomHijo);
+
+        // Creamos los items que vamos a colocar en las habitaciones
+        // y los vamos añadiendo escojiendo las habitaciones al azahar
+        String[] nombresObjetos = {"refrescos", "cartera", "llaves", "pizzas", "bocadillos", "hielos", "mochila", "portatil", "altavoces", "radioCD"};
+        float[] pesoObjetos = {2.5F, 0.3F, 0.2F, 2, 2, 1.2F, 1.8F, 1.5F, 1.3F, 1.7F};
+        ArrayList<Boolean> puedeCojer = new ArrayList<>(Arrays.asList(true, true, true, true, true, true, true, false, false, false));
+        
+        Collections.shuffle(puedeCojer);
+        Random alternativo = new Random();
+        // Podemos cojer los 7 primeros objetos y los otros no
+        int numeroRooms = rooms.size();
+        for(int i = 0; i < nombresObjetos.length; i++) {
+            rooms.get(alternativo.nextInt(numeroRooms)).addItem(new Item(nombresObjetos[i], pesoObjetos[i], puedeCojer.get(i)));
+        } 
     }
 
     /**

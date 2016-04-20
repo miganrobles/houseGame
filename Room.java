@@ -94,7 +94,7 @@ public class Room
             descripcionItems += item.getDescription() + "\n";
         }
         return "Te encuentras en " + description + "\n" 
-        + descripcionItems + getExitString() + "\n";
+        + descripcionItems + "\n" + getExitString() + "\n";
     }
     
     /**

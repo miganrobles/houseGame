@@ -100,9 +100,11 @@ public class Game
 
         // Creamos los items que vamos a colocar en las habitaciones
         // y los vamos añadiendo escojiendo las habitaciones al azahar
-        String[] nombresObjetos = {"refrescos", "cartera", "llaves", "pizzas", "bocadillos", "hielos", "mochila", "portatil", "altavoces", "radioCD"};
+        String[] nombresObjetos = {"refrescos", "cartera", "llaves", "pizzas", "bocadillos",
+                        "hielos", "mochila", "portatil", "altavoces", "radioCD"};
         float[] pesoObjetos = {2.5F, 0.3F, 0.2F, 2, 2, 1.2F, 1.8F, 1.5F, 1.3F, 1.7F};
-        ArrayList<Boolean> puedeCoger = new ArrayList<>(Arrays.asList(true, true, true, true, true, true, true, false, false, false));
+        ArrayList<Boolean> puedeCoger = new ArrayList<>(Arrays.asList(true, true,
+                            true, true, true, true, true, false, false, false));
         
         Collections.shuffle(puedeCoger);
         Random alternativo = new Random();
@@ -186,6 +188,9 @@ public class Game
         else if (commandWord.equals("take")) {
             cogeItem(command);
         }
+        else if (commandWord.equals("drop")) {
+            posaItem(command);
+        }
         return wantToQuit;
     }
 
@@ -211,7 +216,6 @@ public class Game
     private void cogeItem(Command command) 
     {
         if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
             System.out.println("Debes introducir el nombre del objeto que quieres coger");
             return;
         }
@@ -219,11 +223,25 @@ public class Game
         String nombreItem = command.getSecondWord();
         Item item = player.getCurrentRoom().getItem(nombreItem); 
         if (item != null) {
-            player.puedeCogerItem(item); 
+            player.puedeCogerItem(item);
         }
         else {
-            System.out.println("En esta habitación no hay ningún/a " + nombreItem + "\n");
-        }       
+            System.out.println("En esta habitación no hay ningún/a " + nombreItem);
+        }  
+        System.out.println();
+    }
+    
+    /**
+     * Posa un objeto de los que lleva en la habitación donde se encuentra
+     */
+    private void posaItem(Command command) 
+    {
+        if(!command.hasSecondWord()) {
+            System.out.println("Debes introducir el nombre del objeto que quieres posar");
+            return;
+        }
+        player.posarItem(command.getSecondWord());
+        System.out.println();
     }
 
     /** 

@@ -52,12 +52,12 @@ public class Player
             if (pesoItem <= pesoPuedeLlevar) {
                 pesoPuedeLlevar -= pesoItem;
                 cogeItem(item);
-                System.out.println();
             }
             else {
                 DecimalFormat form = new DecimalFormat("#.##");
-                System.out.println("El objeto pesa " + pesoItem + " kg y solo puede coger " + form.format(pesoPuedeLlevar) + " kg");
-                System.out.println("Debes de posar algún objeto hasta que puedas con el\n");
+                System.out.println("El objeto pesa " + pesoItem + " kg y solo puede coger " 
+                                    + form.format(pesoPuedeLlevar) + " kg");
+                System.out.println("Debes de posar algún objeto hasta que puedas con el");
             }
         }
         else {
@@ -82,14 +82,16 @@ public class Player
     public void posarItem(String nombreItem)
     {
         boolean buscando = true;
-        for (int i = 0; i < itemsCogidos.size() && buscando; i++) {
-            if (itemsCogidos.get(i).equals(nombreItem)) {
+        int numeroItems = itemsCogidos.size();
+        for (int i = 0; i < numeroItems && buscando; i++) {
+            if (itemsCogidos.get(i).getNombre().equals(nombreItem)) {
                 buscando = false;
                 currentRoom.addItem(itemsCogidos.remove(i));
             }
         }
         if (buscando) {
-            System.out.println("¡¡ERROR!! , no tienes ningun/a" + nombreItem + " que puedas dejar en esta habitación");
+            System.out.println("¡¡ERROR!! , no tienes ningun/a " + nombreItem + 
+            " que puedas dejar en esta habitación");
         }
     }
 }

@@ -65,4 +65,22 @@ public class Player
     {
         itemsCojidos.add(item);
     }
+    
+    /**
+     * Permite dejar un item de los que tiene en la habitación 
+     * en la que se encuentra
+     */
+    public void posarItem(String nombreItem)
+    {
+        boolean buscando = true;
+        for (int i = 0; i < itemsCojidos.size() && buscando; i++) {
+            if (itemsCojidos.get(i).equals(nombreItem)) {
+                buscando = false;
+                currentRoom.addItem(itemsCojidos.remove(i));
+            }
+        }
+        if (buscando) {
+            System.out.println("¡¡ERROR!! , no tienes ningun/a" + nombreItem + " que puedas dejar en esta habitación");
+        }
+    }
 }

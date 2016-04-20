@@ -55,9 +55,9 @@ public class Player
             }
             else {
                 DecimalFormat form = new DecimalFormat("#.##");
-                System.out.println("El objeto pesa " + pesoItem + " kg y solo puede coger " 
+                System.out.println("El objeto pesa " + pesoItem + " kg y solo puedes coger " 
                                     + form.format(pesoPuedeLlevar) + " kg");
-                System.out.println("Debes de posar algún objeto hasta que puedas con el");
+                System.out.println("Debes de posar algún objeto hasta que puedas con él");
             }
         }
         else {
@@ -86,6 +86,7 @@ public class Player
         for (int i = 0; i < numeroItems && buscando; i++) {
             if (itemsCogidos.get(i).getNombre().equals(nombreItem)) {
                 buscando = false;
+                pesoPuedeLlevar += itemsCogidos.get(i).getPeso();
                 currentRoom.addItem(itemsCogidos.remove(i));
             }
         }
@@ -93,5 +94,17 @@ public class Player
             System.out.println("¡¡ERROR!! , no tienes ningun/a " + nombreItem + 
             " que puedas dejar en esta habitación");
         }
+    }
+    
+    /**
+     * Muestra la información de todos los item que el jugador lleva con sigo
+     */
+    public void mostrarItems()
+    {
+        System.out.println("Items que llevas encima: ");
+        for (Item item : itemsCogidos) {
+            System.out.println(item.getDescription());
+        }
+        System.out.println();
     }
 }

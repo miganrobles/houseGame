@@ -191,6 +191,9 @@ public class Game
         else if (commandWord.equals("drop")) {
             posaItem(command);
         }
+        else if (commandWord.equals("items")) {
+            player.mostrarItems();
+        }
         return wantToQuit;
     }
 

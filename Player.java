@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 /**
  * Write a description of class Player here.
@@ -10,8 +11,8 @@ public class Player
 {
     // Guarda la localización en la que se encuentra el jugador
     private Room currentRoom;
-    // Guarda los items que va cojiendo el jugador
-    private ArrayList<Item> itemsCojidos;
+    // Guarda los items que va cogiendo el jugador
+    private ArrayList<Item> itemsCogidos;
     // Peso que puede transportar el jugador
     private float pesoPuedeLlevar;
 
@@ -20,8 +21,9 @@ public class Player
      */
     public Player(Room currentRoom)
     {
-        pesoPuedeLlevar = 10;
+        pesoPuedeLlevar = 5;
         this.currentRoom = currentRoom;
+        itemsCogidos = new ArrayList<>();
     }
 
     /**
@@ -39,21 +41,27 @@ public class Player
     {
         currentRoom = newRoom;
     }
-    
+
     /**
-     * Comprueba si puede cojer el item según su peso
+     * Comprueba si puede coger el item y si es así lo coge
      */
-    public void puedeConItem(Item item)
+    public void puedeCogerItem(Item item)
     {
-        float pesoItem = item.getPeso();
-        if (pesoItem <= pesoPuedeLlevar) {
-            pesoPuedeLlevar -= pesoItem;
-            cojeItem(item);
-            currentRoom.removeItem(item);
+        if (item.getPuedeSerCogido()) {
+            float pesoItem = item.getPeso();
+            if (pesoItem <= pesoPuedeLlevar) {
+                pesoPuedeLlevar -= pesoItem;
+                cogeItem(item);
+                System.out.println();
+            }
+            else {
+                DecimalFormat form = new DecimalFormat("#.##");
+                System.out.println("El objeto pesa " + pesoItem + " kg y solo puede coger " + form.format(pesoPuedeLlevar) + " kg");
+                System.out.println("Debes de posar algún objeto hasta que puedas con el\n");
+            }
         }
         else {
-            System.out.println("El objeto pesa " + pesoItem + " y solo puede cojer " + pesoPuedeLlevar);
-            System.out.println("Si quiere cojer este objeto, debe de posar otro antes para que pueda con él");
+            System.out.println("Este objeto no se puede coger");
         }
     }
 
@@ -61,11 +69,12 @@ public class Player
      * Añade items a los que tiene el jugador
      * de los que hay en la habitación en la que se encuentra
      */
-    public void cojeItem(Item item)
+    public void cogeItem(Item item)
     {
-        itemsCojidos.add(item);
+        currentRoom.removeItem(item);
+        itemsCogidos.add(item);
     }
-    
+
     /**
      * Permite dejar un item de los que tiene en la habitación 
      * en la que se encuentra
@@ -73,10 +82,10 @@ public class Player
     public void posarItem(String nombreItem)
     {
         boolean buscando = true;
-        for (int i = 0; i < itemsCojidos.size() && buscando; i++) {
-            if (itemsCojidos.get(i).equals(nombreItem)) {
+        for (int i = 0; i < itemsCogidos.size() && buscando; i++) {
+            if (itemsCogidos.get(i).equals(nombreItem)) {
                 buscando = false;
-                currentRoom.addItem(itemsCojidos.remove(i));
+                currentRoom.addItem(itemsCogidos.remove(i));
             }
         }
         if (buscando) {

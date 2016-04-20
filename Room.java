@@ -106,7 +106,7 @@ public class Room
     }
     
     /**
-     * Elimina el item cuando es cojido
+     * Elimina el item cuando es cogido
      */
     public void removeItem(Item item)
     {

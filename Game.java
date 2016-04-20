@@ -102,14 +102,14 @@ public class Game
         // y los vamos añadiendo escojiendo las habitaciones al azahar
         String[] nombresObjetos = {"refrescos", "cartera", "llaves", "pizzas", "bocadillos", "hielos", "mochila", "portatil", "altavoces", "radioCD"};
         float[] pesoObjetos = {2.5F, 0.3F, 0.2F, 2, 2, 1.2F, 1.8F, 1.5F, 1.3F, 1.7F};
-        ArrayList<Boolean> puedeCojer = new ArrayList<>(Arrays.asList(true, true, true, true, true, true, true, false, false, false));
+        ArrayList<Boolean> puedeCoger = new ArrayList<>(Arrays.asList(true, true, true, true, true, true, true, false, false, false));
         
-        Collections.shuffle(puedeCojer);
+        Collections.shuffle(puedeCoger);
         Random alternativo = new Random();
-        // Podemos cojer los 7 primeros objetos y los otros no
+        // Podemos coger los 7 primeros objetos y los otros no
         int numeroRooms = rooms.size();
         for(int i = 0; i < nombresObjetos.length; i++) {
-            rooms.get(alternativo.nextInt(numeroRooms)).addItem(new Item(nombresObjetos[i], pesoObjetos[i], puedeCojer.get(i)));
+            rooms.get(alternativo.nextInt(numeroRooms)).addItem(new Item(nombresObjetos[i], pesoObjetos[i], puedeCoger.get(i)));
         } 
     }
 
@@ -183,6 +183,9 @@ public class Game
                 printLocationInfo();
             }
         }
+        else if (commandWord.equals("take")) {
+            cogeItem(command);
+        }
         return wantToQuit;
     }
 
@@ -198,6 +201,29 @@ public class Game
         System.out.println();
         parser.muestraComandos();
 
+    }
+    
+    /** 
+     * Si la orden para coger el objeto es correcta 
+     * coge el objeto de la habitación, si este se puede coger y 
+     * si no es correcta o no se puede coger muestra un mensaje de error
+     */
+    private void cogeItem(Command command) 
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Debes introducir el nombre del objeto que quieres coger");
+            return;
+        }
+        
+        String nombreItem = command.getSecondWord();
+        Item item = player.getCurrentRoom().getItem(nombreItem); 
+        if (item != null) {
+            player.puedeCogerItem(item); 
+        }
+        else {
+            System.out.println("En esta habitación no hay ningún/a " + nombreItem + "\n");
+        }       
     }
 
     /** 

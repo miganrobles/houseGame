@@ -12,18 +12,21 @@ public class Item
     private String nombre;
     // Peso del objeto
     private float peso;
+    // Determina si el objeto puede ser cogido
+    private boolean puedeSerCogido;
 
     /**
      * Constructor for objects of class Item
      */
-    public Item(String nombre, float peso)
+    public Item(String nombre, float peso, boolean puedeSerCogido)
     {
         this.nombre = nombre;
         this.peso = peso;
+        this.puedeSerCogido = puedeSerCogido;
     }
 
     /**
-     * Devuleve el nombre descriptivo del objeto
+     * Devuelve el nombre descriptivo del objeto
      */
     public String getNombre()
     {
@@ -37,8 +40,20 @@ public class Item
     {
         return peso;
     }
+    
+    /**
+     * Devuelve una pequeña descripión con el nombre y el peso
+     */
     public String getDescription()
     {
         return nombre + ", peso: " + peso + " kg";
+    }
+    
+    /**
+     * Devuelve verdadero si el objeto puede ser cogido
+     */
+    public boolean getPuedeSerCogido()
+    {
+        return puedeSerCogido;
     }
 }

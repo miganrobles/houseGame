@@ -94,7 +94,7 @@ public class Room
             descripcionItems += item.getDescription() + "\n";
         }
         return "Te encuentras en " + description + "\n" 
-        + descripcionItems + getExitString() + "\n";
+        + descripcionItems + "\n" + getExitString() + "\n";
     }
     
     /**
@@ -103,5 +103,28 @@ public class Room
     public void addItem(Item item)
     {
         items.add(item);
+    }
+    
+    /**
+     * Elimina el item cuando es cogido
+     */
+    public void removeItem(Item item)
+    {
+        items.remove(item);
+    }
+    
+    /**
+     * Devuelve el item si se encuentra en la habitación
+     */
+    public Item getItem(String nombreItem)
+    {
+        Item item = null;
+        int cantidadItems = items.size();
+        for (int index = 0; index < items.size() && item == null; index++) {
+            if (items.get(index).getNombre().equals(nombreItem)) {
+                item = items.get(index);
+            }
+        }
+        return item;
     }
 }

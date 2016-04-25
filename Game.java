@@ -140,7 +140,7 @@ public class Game
         System.out.println("World of jungle is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        printLocationInfo();
+        player.printLocationInfo();
     }
 
     /**
@@ -163,31 +163,25 @@ public class Game
             printHelp();
         }
         else if (commandWord.equals(Option.GO)) {
-            goRoom(command);
+            player.goRoom(command);
         }
         else if (commandWord.equals(Option.QUIT)) {
             wantToQuit = quit(command);
         }
         else if (commandWord.equals(Option.LOOK)) {
-            printLocationInfo();
+            player.printLocationInfo();
         }
         else if (commandWord.equals(Option.EAT)) {
             System.out.println("You have eaten now and you are not hungry any more\n");
         }
         else if (commandWord.equals(Option.BACK)) {
-            if (player.backRoomsIsEmpty()) {
-                System.out.println("No es posible volver a la localización anterior\n");
-            }
-            else {
-                player.goBackRoom();
-                printLocationInfo();
-            }
+           player.goBackRoom();
         }
         else if (commandWord.equals(Option.TAKE)) {
-            cogeItem(command);
+            player.cogeItem(command);
         }
         else if (commandWord.equals(Option.DROP)) {
-            posaItem(command);
+            player.posaItem(command);
         }
         else if (commandWord.equals(Option.ITEMS)) {
             player.mostrarItems();
@@ -210,86 +204,6 @@ public class Game
     }
 
     /** 
-     * Si la orden para coger el item es correcta 
-     * coge el item de la habitación, si este se puede coger y 
-     * si no es correcta o no se puede coger muestra un mensaje
-     */
-    private void cogeItem(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            System.out.println("¿Que quieres coger?\n");
-            return;
-        }
-
-        //Comprueba si el segundo comando es un número
-        int numItem;        
-        try { 
-            numItem = Integer.parseInt(command.getSecondWord());
-        } 
-        catch (NumberFormatException ex){
-            System.out.println("¡¡ERROR!! La referencia debe de ser un número\n");
-            return;
-        }
-
-        Item item = player.getCurrentRoom().getItem(numItem);
-        if (item != null) {
-            player.puedeCogerItem(item);
-        }
-        else {
-            System.out.println("En esta habitación no se encuentra el item con esa referencia");
-        }  
-        System.out.println();
-    }
-
-    /**
-     * Posa un item de los que lleva en la habitación donde se encuentra
-     */
-    private void posaItem(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            System.out.println("¿Qué quieres posar?\n");
-            return;
-        }
-
-        int numItem;        
-        try { 
-            numItem = Integer.parseInt(command.getSecondWord());
-        } 
-        catch (NumberFormatException ex){
-            System.out.println("¡¡ERROR!! La referencia debe de ser un número\n");
-            return;
-        }
-        player.posarItem(numItem);
-        System.out.println();
-    }
-
-    /** 
-     * Try to go in one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
-     */
-    private void goRoom(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?\n");
-            return;
-        }
-
-        String direction = command.getSecondWord();
-
-        // Try to leave current room.
-        Room nextRoom = player.getCurrentRoom().getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!\n");
-        }
-        else {
-            player.goNewRoom(nextRoom);
-            printLocationInfo();
-        }
-    }
-
-    /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
      * @return true, if this command quits the game, false otherwise.
@@ -303,14 +217,5 @@ public class Game
         else {
             return true;  // signal that we want to quit
         }
-    }
-
-    /**
-     * Muestra la información de la habitación en la que te encuentras 
-     * y las posibles salidas que se pueden tomar
-     */
-    private void printLocationInfo()
-    {
-        System.out.println(player.getCurrentRoom().getLongDescription());
     }
 }

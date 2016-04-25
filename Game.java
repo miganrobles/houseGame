@@ -162,35 +162,35 @@ public class Game
             case HELP: 
             printHelp();
             break;
-            
+
             case GO: 
             player.goRoom(command);
             break;
-            
+
             case QUIT: 
             wantToQuit = quit(command);
             break;
-            
+
             case LOOK:
             player.printLocationInfo();
             break;
-            
+
             case EAT:
             System.out.println("You have eaten now and you are not hungry any more\n");
             break;
-            
+
             case BACK:
             player.goBackRoom();
             break;
-            
+
             case TAKE:
             player.cogeItem(command);
             break;
-            
+
             case DROP:
             player.posaItem(command);
             break;
-            
+
             case ITEMS:
             player.mostrarItems();
             break;

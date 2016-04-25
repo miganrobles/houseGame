@@ -23,15 +23,12 @@ public class CommandWords
     public CommandWords()
     {
         // nothing to do at the moment...
-        Option[] opciones = Option.values();
         comandos = new HashMap<>();
-        final String[] validCommands = {
-                "andare", "smettere", "aiuto", "guarda", "mangiare", "indietro",
-                "prendere", "far_cadere", "elementi"};
-        for (int i = 0; i < validCommands.length; i++) {
-            comandos.put(validCommands[i], opciones[i]);
+        
+        Option[] opciones = Option.values();        
+        for (Option option : opciones) {
+            comandos.put(option.getComando(), option);
         }
-
     }
 
     /**

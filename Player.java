@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.text.DecimalFormat;
+import java.util.Stack;
 
 /**
  * Write a description of class Player here.
@@ -15,6 +16,8 @@ public class Player
     private ArrayList<Item> itemsCogidos;
     // Peso que puede transportar el jugador
     private float pesoPuedeLlevar;
+    // Guarda las habitaciones por las que vamos pasando para poder ir atrás
+    private Stack<Room> backRooms;
 
     /**
      * Constructor for objects of class Player
@@ -24,6 +27,7 @@ public class Player
         pesoPuedeLlevar = 5;
         this.currentRoom = currentRoom;
         itemsCogidos = new ArrayList<>();
+        backRooms = new Stack<>();
     }
 
     /**
@@ -43,6 +47,33 @@ public class Player
     }
 
     /**
+     * Va a una nueva habitación y guarda
+     * la habitación actual por si queremos
+     * retroceder en nuestro recorrido
+     */
+    public void goNewRoom(Room newRoom)
+    {        
+        backRooms.push(currentRoom);
+        currentRoom = newRoom;
+    }
+
+    /**
+     * Devuelve true si no hay ninguna habitacíon donde retroceder
+     */
+    public boolean backRoomsIsEmpty()
+    {
+        return backRooms.empty();
+    }
+
+    /**
+     * Regresa a la última habitación anterior donde hemos estado
+     */
+    public void goBackRoom()
+    {
+        currentRoom = backRooms.pop();
+    }
+
+    /**
      * Comprueba si puede coger el item y si es así lo coge
      */
     public void puedeCogerItem(Item item)
@@ -57,7 +88,7 @@ public class Player
             else {
                 DecimalFormat form = new DecimalFormat("#.##");
                 System.out.println("El item pesa " + pesoItem + " kg y solo puedes coger " 
-                                    + form.format(pesoPuedeLlevar) + " kg");
+                    + form.format(pesoPuedeLlevar) + " kg");
                 System.out.println("Debes de posar algún item hasta que puedas con él");
             }
         }
@@ -96,7 +127,7 @@ public class Player
             System.out.println("No tienes el item con referencia " + numRef);
         }
     }
-    
+
     /**
      * Muestra la información de todos los item que el jugador lleva con sigo
      */

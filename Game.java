@@ -1,5 +1,4 @@
 import java.util.Random;
-import java.util.Stack;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Arrays;
@@ -24,7 +23,6 @@ import java.util.Arrays;
 public class Game 
 {
     private Parser parser;
-    private Stack<Room> backRooms;
     private Player player;
     /**
      * Create the game and initialise its internal map.
@@ -33,7 +31,6 @@ public class Game
     {
         createRooms();
         parser = new Parser();
-        backRooms = new Stack<>();
     }
 
     /**
@@ -178,11 +175,11 @@ public class Game
             System.out.println("You have eaten now and you are not hungry any more\n");
         }
         else if (commandWord.equals(Option.BACK)) {
-            if (backRooms.empty()) {
+            if (player.backRoomsIsEmpty()) {
                 System.out.println("No es posible volver a la localización anterior\n");
             }
             else {
-                player.setCurrentRoom(backRooms.pop());
+                player.goBackRoom();
                 printLocationInfo();
             }
         }
@@ -281,15 +278,13 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room actualRoom = player.getCurrentRoom();
-        Room nextRoom = actualRoom.getExit(direction);
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!\n");
         }
         else {
-            backRooms.push(actualRoom);
-            player.setCurrentRoom(nextRoom);
+            player.goNewRoom(nextRoom);
             printLocationInfo();
         }
     }

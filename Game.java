@@ -158,33 +158,42 @@ public class Game
         }
 
         Option commandWord = command.getCommandWord();
-        
-        if (commandWord.equals(Option.HELP)) {
+        switch (commandWord) {
+            case HELP: 
             printHelp();
-        }
-        else if (commandWord.equals(Option.GO)) {
+            break;
+            
+            case GO: 
             player.goRoom(command);
-        }
-        else if (commandWord.equals(Option.QUIT)) {
+            break;
+            
+            case QUIT: 
             wantToQuit = quit(command);
-        }
-        else if (commandWord.equals(Option.LOOK)) {
+            break;
+            
+            case LOOK:
             player.printLocationInfo();
-        }
-        else if (commandWord.equals(Option.EAT)) {
+            break;
+            
+            case EAT:
             System.out.println("You have eaten now and you are not hungry any more\n");
-        }
-        else if (commandWord.equals(Option.BACK)) {
-           player.goBackRoom();
-        }
-        else if (commandWord.equals(Option.TAKE)) {
+            break;
+            
+            case BACK:
+            player.goBackRoom();
+            break;
+            
+            case TAKE:
             player.cogeItem(command);
-        }
-        else if (commandWord.equals(Option.DROP)) {
+            break;
+            
+            case DROP:
             player.posaItem(command);
-        }
-        else if (commandWord.equals(Option.ITEMS)) {
+            break;
+            
+            case ITEMS:
             player.mostrarItems();
+            break;
         }
         return wantToQuit;
     }

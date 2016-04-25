@@ -1,4 +1,3 @@
-
 /**
  * Enumeration class Option - write a description of the enum class here
  * 
@@ -7,5 +6,25 @@
  */
 public enum Option
 {
-    GO, QUIT, HELP, LOOK, EAT, BACK, TAKE, DROP, ITEMS, UNKNOWN
+    GO("andare"), QUIT("smettere"), HELP("aiuto"), LOOK("guarda"), EAT("mangiare"), BACK("indietro"), TAKE("prendere"), 
+    DROP("far_cadere"), ITEMS("elementi"), UNKNOWN("");
+    
+    private String comando;
+    
+    /**
+     * Constructor de la clase Option
+     */
+    Option (String comando) 
+    {
+        this.comando = comando;
+    }
+    
+    /**
+     * Devuelve un String con nombre del comando
+     */
+    public String getComando()
+    {
+        return comando;
+    }
 }
+

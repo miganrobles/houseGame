@@ -100,18 +100,18 @@ public class Game
 
         // Creamos los items que vamos a colocar en las habitaciones
         // y los vamos añadiendo escojiendo las habitaciones al azahar
-        String[] nombresObjetos = {"refrescos", "cartera", "llaves", "pizzas", "bocadillos",
-                        "hielos", "mochila", "portatil", "altavoces", "radioCD"};
-        float[] pesoObjetos = {2.5F, 0.3F, 0.2F, 2, 2, 1.2F, 1.8F, 1.5F, 1.3F, 1.7F};
+        String[] nombresItems = {"refrescos", "cartera", "llaves", "pizzas", "bocadillos",
+                "hielos", "mochila", "portatil", "altavoces", "radioCD"};
+        float[] pesoItems = {2.5F, 0.3F, 0.2F, 2, 2, 1.2F, 1.8F, 1.5F, 1.3F, 1.7F};
         ArrayList<Boolean> puedeCoger = new ArrayList<>(Arrays.asList(true, true,
-                            true, true, true, true, true, false, false, false));
-        
+                    true, true, true, true, true, false, false, false));
+
         Collections.shuffle(puedeCoger);
         Random alternativo = new Random();
-        // Podemos coger los 7 primeros objetos y los otros no
+        // Podemos coger los 7 primeros items y los otros no
         int numeroRooms = rooms.size();
-        for(int i = 0; i < nombresObjetos.length; i++) {
-            rooms.get(alternativo.nextInt(numeroRooms)).addItem(new Item(nombresObjetos[i], pesoObjetos[i], puedeCoger.get(i)));
+        for(int i = 0; i < nombresItems.length; i++) {
+            rooms.get(alternativo.nextInt(numeroRooms)).addItem(new Item(nombresItems[i], pesoItems[i], puedeCoger.get(i)));
         } 
     }
 
@@ -156,7 +156,7 @@ public class Game
         boolean wantToQuit = false;
 
         if(command.isUnknown()) {
-            System.out.println("I don't know what you mean...");
+            System.out.println("I don't know what you mean...\n");
             return false;
         }
 
@@ -210,40 +210,58 @@ public class Game
         parser.muestraComandos();
 
     }
-    
+
     /** 
-     * Si la orden para coger el objeto es correcta 
-     * coge el objeto de la habitación, si este se puede coger y 
-     * si no es correcta o no se puede coger muestra un mensaje de error
+     * Si la orden para coger el item es correcta 
+     * coge el item de la habitación, si este se puede coger y 
+     * si no es correcta o no se puede coger muestra un mensaje
      */
     private void cogeItem(Command command) 
     {
         if(!command.hasSecondWord()) {
-            System.out.println("Debes introducir el nombre del objeto que quieres coger");
+            System.out.println("¿Que quieres coger?\n");
             return;
         }
-        
-        String nombreItem = command.getSecondWord();
-        Item item = player.getCurrentRoom().getItem(nombreItem); 
+
+        //Comprueba si el segundo comando es un número
+        int numItem;        
+        try { 
+            numItem = Integer.parseInt(command.getSecondWord());
+        } 
+        catch (NumberFormatException ex){
+            System.out.println("¡¡ERROR!! La referencia debe de ser un número\n");
+            return;
+        }
+
+        Item item = player.getCurrentRoom().getItem(numItem);
         if (item != null) {
             player.puedeCogerItem(item);
         }
         else {
-            System.out.println("En esta habitación no hay ningún/a " + nombreItem);
+            System.out.println("En esta habitación no se encuentra el item con esa referencia");
         }  
         System.out.println();
     }
-    
+
     /**
-     * Posa un objeto de los que lleva en la habitación donde se encuentra
+     * Posa un item de los que lleva en la habitación donde se encuentra
      */
     private void posaItem(Command command) 
     {
         if(!command.hasSecondWord()) {
-            System.out.println("Debes introducir el nombre del objeto que quieres posar");
+            System.out.println("¿Qué quieres posar?\n");
             return;
         }
-        player.posarItem(command.getSecondWord());
+
+        int numItem;        
+        try { 
+            numItem = Integer.parseInt(command.getSecondWord());
+        } 
+        catch (NumberFormatException ex){
+            System.out.println("¡¡ERROR!! La referencia debe de ser un número\n");
+            return;
+        }
+        player.posarItem(numItem);
         System.out.println();
     }
 
@@ -255,7 +273,7 @@ public class Game
     {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
+            System.out.println("Go where?\n");
             return;
         }
 
@@ -266,7 +284,7 @@ public class Game
         Room nextRoom = actualRoom.getExit(direction);
 
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            System.out.println("There is no door!\n");
         }
         else {
             backRooms.push(actualRoom);

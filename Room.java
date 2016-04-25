@@ -21,7 +21,7 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> salidas;
-    // Almacena todos los objetos que puedan existir en la habitación
+    // Almacena todos los items que puedan existir en la habitación
     private ArrayList<Item> items;
     /**
      * Create a room described "description". Initially, it has
@@ -57,7 +57,7 @@ public class Room
 
     /**
      * Toma como parámetro una cadena que representa una dirección 
-     * y devuelva el objeto de la clase Room
+     * y devuelva el item de la clase Room
      */
     public Room getExit(String exit)
     {    
@@ -89,7 +89,7 @@ public class Room
      */
     public String getLongDescription()
     {
-        String descripcionItems = "Objetos existentes: \n";
+        String descripcionItems = "Items existentes: \n";
         for (Item item : items) {
             descripcionItems += item.getDescription() + "\n";
         }
@@ -116,12 +116,12 @@ public class Room
     /**
      * Devuelve el item si se encuentra en la habitación
      */
-    public Item getItem(String nombreItem)
+    public Item getItem(int ref)
     {
         Item item = null;
         int cantidadItems = items.size();
         for (int index = 0; index < items.size() && item == null; index++) {
-            if (items.get(index).getNombre().equals(nombreItem)) {
+            if (items.get(index).getRef() == ref) {
                 item = items.get(index);
             }
         }

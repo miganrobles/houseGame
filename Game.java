@@ -138,7 +138,7 @@ public class Game
         System.out.println();
         System.out.println("Welcome to the jungle");
         System.out.println("World of jungle is a new, incredibly boring adventure game.");
-        System.out.println("Type 'aiuto' if you need help.");
+        System.out.println("Type '" + Option.HELP.getComando() + "' if you need help.");
         System.out.println();
         player.printLocationInfo();
     }

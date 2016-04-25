@@ -160,23 +160,24 @@ public class Game
             return false;
         }
 
-        String commandWord = command.getCommandWord();
-        if (commandWord.equals("help")) {
+        Option commandWord = command.getCommandWord();
+        
+        if (commandWord.equals(Option.HELP)) {
             printHelp();
         }
-        else if (commandWord.equals("go")) {
+        else if (commandWord.equals(Option.GO)) {
             goRoom(command);
         }
-        else if (commandWord.equals("quit")) {
+        else if (commandWord.equals(Option.QUIT)) {
             wantToQuit = quit(command);
         }
-        else if (commandWord.equals("look")) {
+        else if (commandWord.equals(Option.LOOK)) {
             printLocationInfo();
         }
-        else if (commandWord.equals("eat")) {
+        else if (commandWord.equals(Option.EAT)) {
             System.out.println("You have eaten now and you are not hungry any more\n");
         }
-        else if (commandWord.equals("back")) {
+        else if (commandWord.equals(Option.BACK)) {
             if (backRooms.empty()) {
                 System.out.println("No es posible volver a la localización anterior\n");
             }
@@ -185,13 +186,13 @@ public class Game
                 printLocationInfo();
             }
         }
-        else if (commandWord.equals("take")) {
+        else if (commandWord.equals(Option.TAKE)) {
             cogeItem(command);
         }
-        else if (commandWord.equals("drop")) {
+        else if (commandWord.equals(Option.DROP)) {
             posaItem(command);
         }
-        else if (commandWord.equals("items")) {
+        else if (commandWord.equals(Option.ITEMS)) {
             player.mostrarItems();
         }
         return wantToQuit;

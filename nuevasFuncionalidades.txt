@@ -1,0 +1,24 @@
+
+Añadimos un objeto especial al juego que puede ser cargado en la mochila. El jugador puede cojer objetos como hasta ahora, podrá coger el objeto especial que será colocado al azar, siempre que pueda con él.
+
+Cuando cargamos ese objeto se memoriza en él la localización actual. Este objeto transporta inmediatamente al jugador a la localización memorizada si lo posa, pero este automáticamente se recoloca en otra habitación. Este objeto será algún objeto que el jugador puede recoger(un item).
+
+
+Añadimos otros 3 personajes además del jugador al juego. El padre  que será colocado en la salaDeInvitados y los dos hermanos que serán añadidos como nuevos Objetos Personaje y situados al azar. Se identificarán por su nombre(padre, hermano, hermana).
+
+El padre se moverá por la casa recolocándose cada dos movimientos del jugador pero no podrá situarse en la habitación en la que está el hijo(player).
+
+
+Si el jugador se mueve a una habitación y en la localización está el padre, si posee el objeto especial se transporta a la habitación donde lo cogió salvandose de perder la partida y el objeto especial se recoloca en otra habitación al azar, si no su padre le pilla y pierde la partida.
+
+
+Si coincide en una habitacion con alguno de los dos hermanos( se le mostrarán en la descripción de la habitación ), el jugador dispondrá de un nuevo comando para poder saludar al hermano y este le preguntará si le trae su un item.Este objeto será asignado en el inicio al los dos hermanos.
+
+Si el jugador trae el objeto y lo posa en esa habitación, el hermano le dirá si por alguna de las salidas que puede tomar está el padre y si no le dirá en que habitación se encuentra.
+
+Cuando el jugador llega a la salida y no está su padre esperándolo en ella, el jugador ya puede ir a la fiesta y el juego acaba.
+
+
+
+
+ 

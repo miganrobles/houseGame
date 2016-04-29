@@ -18,16 +18,21 @@ public class Player
     private float pesoPuedeLlevar;
     // Guarda las habitaciones por las que vamos pasando para poder ir atrás
     private Stack<Room> backRooms;
+    // Guarda la habitación donde coge el objeto especial
+    private Room roomEspecial;
+    // Pesso máximo que puede llevar el jugador
+    public static final int PESO_MAXIMO_PUEDE_COJER = 5;
 
     /**
      * Constructor for objects of class Player
      */
     public Player(Room currentRoom)
     {
-        pesoPuedeLlevar = 5;
+        pesoPuedeLlevar = PESO_MAXIMO_PUEDE_COJER;
         this.currentRoom = currentRoom;
         itemsCogidos = new ArrayList<>();
         backRooms = new Stack<>();
+        roomEspecial = null;
     }
 
     /**
@@ -45,7 +50,7 @@ public class Player
     {
         currentRoom = newRoom;
     }
-    
+
     /** 
      * Try to go in one direction. If there is an exit, enter
      * the new room, otherwise print an error message.
@@ -87,7 +92,7 @@ public class Player
             printLocationInfo();
         }
     }
-    
+
     /**
      * Si la orden para coger el item es correcta 
      * coge el item de la habitación, si este se puede coger y 
@@ -132,6 +137,9 @@ public class Player
                 currentRoom.removeItem(item);
                 itemsCogidos.add(item);
                 System.out.println("Cogido item:   " + item.getDescription());
+                if (item.getRef() == Item.REF_OBJETO_ESPECIAL) {
+                    roomEspecial = currentRoom;
+                }
             }
             else {
                 DecimalFormat form = new DecimalFormat("#.##");
@@ -144,18 +152,18 @@ public class Player
             System.out.println("Este item no se puede coger");
         }
     }
-    
+
     /**
      * Si la orden para posar el item es correcta y la
      * referencia del item, posa el item en la habitación,
      * si no es correcta o la referencia del item no es correcta
      * muestra un mensaje avisándonos de ello.
      */
-    public void posaItem(Command command) 
+    public Item posaItem(Command command) 
     {
         if(!command.hasSecondWord()) {
             System.out.println("¿Qué quieres posar?\n");
-            return;
+            return null;
         }
 
         int numItem;        
@@ -164,18 +172,20 @@ public class Player
         } 
         catch (NumberFormatException ex){
             System.out.println("¡¡ERROR!! La referencia debe de ser un número\n");
-            return;
+            return null;
         }
-        posaItem(numItem);
+        Item item = posaItem(numItem);
         System.out.println();
+        return item;
     }
 
     /**
      * Permite dejar un item de los que tiene en la habitación 
      * en la que se encuentra
      */
-    private void posaItem(int numRef)
+    private Item posaItem(int numRef)
     {
+        Item item = null;
         boolean buscando = true;
         int numeroItems = itemsCogidos.size();
         for (int i = 0; i < numeroItems && buscando; i++) {
@@ -183,12 +193,21 @@ public class Player
                 buscando = false;
                 pesoPuedeLlevar += itemsCogidos.get(i).getPeso();
                 System.out.println("Posado item:   " + itemsCogidos.get(i).getDescription());
-                currentRoom.addItem(itemsCogidos.remove(i));
+                if (numRef == Item.REF_OBJETO_ESPECIAL) {
+                    currentRoom = roomEspecial;
+                    roomEspecial = null;
+                    item = itemsCogidos.remove(i);
+                }
+                else {
+                    item = itemsCogidos.remove(i);
+                    currentRoom.addItem(item);
+                } 
             }
         }
         if (buscando) {
             System.out.println("No tienes el item con referencia " + numRef);
         }
+        return item;
     }
 
     /**

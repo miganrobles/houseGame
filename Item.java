@@ -14,10 +14,13 @@ public class Item
     private float peso;
     // Determina si el item puede ser cogido
     private boolean puedeSerCogido;
+    // Número de referencia que tiene el objeto especial
+    public static final int REF_OBJETO_ESPECIAL = 1;
     // Asigna un número de referencia al item según se van creando
-    private static int numRef = 1;
+    private static int numRef = REF_OBJETO_ESPECIAL;
     // Guarda el número de referencia del item
     private int ref;
+    
     
     /**
      * Constructor for objects of class Item

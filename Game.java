@@ -24,11 +24,15 @@ public class Game
 {
     private Parser parser;
     private Player player;
+    // Guarda las habitaciones para ir recolocando a los personajes
+    private ArrayList<Room> rooms;
+ 
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+        rooms = new ArrayList<>();
         createRooms();
         parser = new Parser();
     }
@@ -39,10 +43,7 @@ public class Game
     private void createRooms()
     {
         Room salida, salon, cocina, salaDeInvitados, roomHermana, roomPadres,
-        roomHijo, roomHermano;  
-
-        // creamos las habitaciones y las guardamos en un ArrayList
-        ArrayList<Room> rooms = new ArrayList<>();    
+        roomHijo, roomHermano;      
 
         salida = new Room("la salida"); rooms.add(salida);       
         salon = new Room("el salón"); rooms.add(salon);        
@@ -94,7 +95,29 @@ public class Game
 
         // Creamos el jugados y lo situamos en su habitación
         player = new Player(roomHijo);
+        colocarItems();
 
+    }
+
+    /**
+     * Coloca el item especial en una habitación al azar
+     */
+    private void recolocarEspecial(Item item)
+    {
+        if (item.getRef() == Item.REF_OBJETO_ESPECIAL) {
+            Random alternativo = new Random();
+            int numeroRooms = rooms.size();
+            // Recolocamos el objeto especial
+            rooms.get(alternativo.nextInt(numeroRooms)).addItem(item);
+        }
+    }
+
+    /*
+     *  Metodo que coloca los items por las habitaciones
+     *  de manera aleatoria por las habitaciones
+     */
+    private void colocarItems()
+    {
         // Creamos los items que vamos a colocar en las habitaciones
         // y los vamos añadiendo escojiendo las habitaciones al azahar
         String[] nombresItems = {"refrescos", "cartera", "llaves", "pizzas", "bocadillos",
@@ -107,6 +130,8 @@ public class Game
         Random alternativo = new Random();
         // Podemos coger los 7 primeros items y los otros no
         int numeroRooms = rooms.size();
+        // Añadimos el objeto especial
+        rooms.get(alternativo.nextInt(numeroRooms)).addItem(new Item("especial", 1, true));
         for(int i = 0; i < nombresItems.length; i++) {
             rooms.get(alternativo.nextInt(numeroRooms)).addItem(new Item(nombresItems[i], pesoItems[i], puedeCoger.get(i)));
         } 
@@ -188,7 +213,7 @@ public class Game
             break;
 
             case DROP:
-            player.posaItem(command);
+            recolocarEspecial(player.posaItem(command));
             break;
 
             case ITEMS:

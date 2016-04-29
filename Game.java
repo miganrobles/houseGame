@@ -26,6 +26,7 @@ public class Game
     private Player player;
     // Guarda las habitaciones para ir recolocando a los personajes
     private ArrayList<Room> rooms;
+ 
     /**
      * Create the game and initialise its internal map.
      */
@@ -103,10 +104,10 @@ public class Game
      */
     private void recolocarEspecial(Item item)
     {
-        if (item.getRef() == 1) {
+        if (item.getRef() == Item.REF_OBJETO_ESPECIAL) {
             Random alternativo = new Random();
             int numeroRooms = rooms.size();
-            // Añadimos el objeto especial
+            // Recolocamos el objeto especial
             rooms.get(alternativo.nextInt(numeroRooms)).addItem(item);
         }
     }

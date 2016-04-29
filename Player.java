@@ -20,13 +20,15 @@ public class Player
     private Stack<Room> backRooms;
     // Guarda la habitación donde coge el objeto especial
     private Room roomEspecial;
+    // Pesso máximo que puede llevar el jugador
+    public static final int PESO_MAXIMO_PUEDE_COJER = 5;
 
     /**
      * Constructor for objects of class Player
      */
     public Player(Room currentRoom)
     {
-        pesoPuedeLlevar = 5;
+        pesoPuedeLlevar = PESO_MAXIMO_PUEDE_COJER;
         this.currentRoom = currentRoom;
         itemsCogidos = new ArrayList<>();
         backRooms = new Stack<>();

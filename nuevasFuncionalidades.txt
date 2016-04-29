@@ -1,7 +1,14 @@
 
+1ª Funcionalidad
+
+
 Añadimos un objeto especial al juego que puede ser cargado en la mochila. El jugador puede cojer objetos como hasta ahora, podrá coger el objeto especial que será colocado al azar, siempre que pueda con él.
 
 Cuando cargamos ese objeto se memoriza en él la localización actual. Este objeto transporta inmediatamente al jugador a la localización memorizada si lo posa, pero este automáticamente se recoloca en otra habitación. Este objeto será algún objeto que el jugador puede recoger(un item).
+
+
+
+2ª Funcionalidad
 
 
 Añadimos otros 3 personajes además del jugador al juego. El padre  que será colocado en la salaDeInvitados y los dos hermanos que serán añadidos como nuevos Objetos Personaje y situados al azar. Se identificarán por su nombre(padre, hermano, hermana).

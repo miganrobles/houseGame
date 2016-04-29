@@ -137,7 +137,7 @@ public class Player
                 currentRoom.removeItem(item);
                 itemsCogidos.add(item);
                 System.out.println("Cogido item:   " + item.getDescription());
-                if (item.getRef() == 1) {
+                if (item.getRef() == Item.REF_OBJETO_ESPECIAL) {
                     roomEspecial = currentRoom;
                 }
             }
@@ -193,7 +193,7 @@ public class Player
                 buscando = false;
                 pesoPuedeLlevar += itemsCogidos.get(i).getPeso();
                 System.out.println("Posado item:   " + itemsCogidos.get(i).getDescription());
-                if (numRef == 1) {
+                if (numRef == Item.REF_OBJETO_ESPECIAL) {
                     currentRoom = roomEspecial;
                     roomEspecial = null;
                     item = itemsCogidos.remove(i);

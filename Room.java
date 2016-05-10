@@ -37,6 +37,7 @@ public class Room
         this.description = description;
         salidas = new HashMap<>();
         items = new ArrayList<>();
+        personaje = null;
     }
 
     /**
@@ -92,7 +93,7 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "Te encuentras en " + description + "\n" + nombrePersonaje()
+        return "\nTe encuentras en " + description + "\n" + nombrePersonaje()
         + "\n" + itemsDescription() + "\n" + getExitString() + "\n";
     }
     
@@ -136,11 +137,11 @@ public class Room
     }
     
     /**
-     * Devuelve todos los items que hay en la habitación
+     * Devuelve el personaje que está en la habitación
      */
-    public ArrayList<Item> getItems()
+    public Personaje getPersonaje()
     {
-        return items;
+        return personaje;
     }
     
     /**
@@ -153,6 +154,22 @@ public class Room
             nombre = personaje.getNombre();
         }
         return "Personaje: " + nombre;
+    }
+    
+    /**
+     * Devuelve todos los items que hay en la habitación
+     */
+    public ArrayList<Item> getItems()
+    {
+        return items;
+    }
+    
+    /**
+     * Devuelve todas las salidas que tiene la habitación
+     */
+    public HashMap<String, Room> roomsExits()
+    {
+        return salidas;
     }
     
     /**

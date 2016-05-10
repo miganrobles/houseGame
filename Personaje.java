@@ -78,46 +78,55 @@ public class Personaje
     public boolean charlar(String frase)
     {
         boolean charlar = true;
-        if (respuesta == 1) {
-            intruccioneIniciales();
-            respuesta++;
-            charlar = false;
-        }
-        else if (respuesta == 2) {
-            if (frase.equalsIgnoreCase("si")) {
-                System.out.println("Pósalo en la habitación y cuando lo hayas hecho deberás decir textualmente 'item posado'\n");
+        if (numRespuestas > 0) {
+            if (respuesta == 1) {
+                intruccioneIniciales();
                 respuesta++;
                 charlar = false;
             }
-            else if (frase.equalsIgnoreCase("no")) {
-                System.out.println("Entonces lo siento pero no te podré dar ninguna información\n");
-                charlar = false;
-            }
-            else {
-                System.out.println("Solo debes de decir 'si' o 'no'\n");
-            }
-        }
-        else if (respuesta == 3) {
-            if (frase.equalsIgnoreCase("item posado")) {
-                if (currentRoom.getItem(item.getRef()) == null) {
-                    System.out.println("No has posado " + item.getNombre() + " iténtalo de nuevo\n");
+            else if (respuesta == 2) {
+                if (frase.equalsIgnoreCase("si")) {
+                    System.out.println("Pósalo en la habitación y cuando lo hayas hecho deberás decir textualmente 'item posado'\n");
+                    respuesta++;
+                    charlar = false;
+                }
+                else if (frase.equalsIgnoreCase("no")) {
+                    System.out.println("Entonces lo siento pero no te podré dar ninguna información\n");
+                    charlar = false;
                 }
                 else {
-                    respuesta++;
+                    System.out.println("Solo debes de decir 'si' o 'no'\n");
                 }
-                charlar = false;            
+            }
+            else if (respuesta == 3) {
+                if (frase.equalsIgnoreCase("item posado")) {
+                    if (currentRoom.getItem(item.getRef()) == null) {
+                        System.out.println("No has posado " + item.getNombre() + "\n");
+                    }
+                    else {
+                        respuesta++;
+                    }
+                    charlar = false;            
+                }
+                else {
+                    System.out.println("Llegado a este punto sólo deberás decir 'item posado'" + 
+                        " para que yo pueda comprobarlo\n");
+                }
             }
             else {
-                System.out.println("Llegado a este punto sólo deberás decir 'item posado'" + 
-                    " para que yo pueda comprobarlo\n");
+                respuesta++;
+                System.out.println("Ya te he dado la toda la información, como sigas insistiendo te acabaré echando de la habitación\n");
+                charlar = false;
+            }
+            numRespuestas--; 
+            if (numRespuestas > 0) {
+                System.out.println("Te quedan " + numRespuestas + " intentos\n");
+            }
+            else {
+                System.out.println("Se te acabaron las oportunidades");
+                charlar = false;
             }
         }
-        else {
-            respuesta++;
-            System.out.println("Ya te he dado la toda la información, como sigas insistiendo te acabaré echando de la habitación\n");
-        }
-        numRespuestas--; 
-        System.out.println("Te quedan " + numRespuestas + " intentos\n");
         return charlar;
     }
 
@@ -127,7 +136,7 @@ public class Personaje
      */
     private void intruccioneIniciales()
     {
-        System.out.println("Hola tato, me traes " + item.getNombre() + ", revisa tu mochila y luego deverás " +
+        System.out.println("Hola tato, me traes " + item.getNombre() + ", \nrevisa tu mochila y luego deverás " +
             "decirme solo 'si' en caso de que la tengas o 'no' en caso que no."  
             + "\nSólo te responderé como máximo " + MUMERO_MAXIMO_DE_RESPUESTAS + " veces, si te pasas te echo de la habitación\n");
     }
@@ -147,7 +156,7 @@ public class Personaje
     {
         return respuesta;
     }
-    
+
     /**
      * Incrementa la respuesta que va ha dar
      */

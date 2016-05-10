@@ -2,6 +2,9 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -235,8 +238,7 @@ public class Game
             break;
 
             case BACK:
-            player.goBackRoom();
-            break;
+            return accionMovimiento(player.goBackRoom());
 
             case TAKE:
             player.cogeItem(command);
@@ -248,6 +250,10 @@ public class Game
 
             case ITEMS:
             player.mostrarItems();
+            break;
+
+            case TALK:
+            mostrarSituacionPadre(player.talk());
             break;
         }
         return wantToQuit;
@@ -309,7 +315,7 @@ public class Game
             }
         }
     }
-    
+
     /**
      * Recoloca al padre en una de las habitaciones al azar que 
      * no puedrá ser en la que está el jugador actualmente
@@ -318,7 +324,7 @@ public class Game
     {
         padre.setCurrentRoom(azarRoom(null));
     }
-    
+
     /**
      * Despues de realizar un movimiento, este método procesa la opciones devueltas
      */
@@ -339,21 +345,47 @@ public class Game
             if (item != null) {
                 System.out.println("Has tenido suerte, tenías el objeto especial y te has salvado\n");
                 recolocarEspecial(item);
+                player.printLocationInfo();
             }
             else {                
-                System.out.println("GAME OVER");
+                System.out.println("-----GAME OVER-----");
                 finalizarJuego = true;
             }
         }
         else if (player.getCurrentRoom().getDescription().equalsIgnoreCase("la salida")) {
             System.out.println("¡¡¡FELICIDADES!!!");
             System.out.println("\nLo has logrado, estás en la salida y ya puedes salir de fiesta");
-            System.out.println("GAME OVER");
+            System.out.println("-----GAME OVER-----");
             finalizarJuego = true;
         }
         else if (valor == 0) {
             recolocarPadre();
         }
         return finalizarJuego;
+    }
+
+    /**
+     * Muestra la situación del padre
+     */
+    private void mostrarSituacionPadre(Personaje personaje)
+    {
+        if (personaje != null && personaje.getRespuesta() == 4) {
+            int numItem = personaje.getItem().getRef();
+            if (personaje.getCurrentRoom().getItem(numItem) != null) {
+                HashMap<String, Room> salidas = personaje.getCurrentRoom().roomsExits();
+                Iterator it = salidas.entrySet().iterator();
+                boolean buscando = true;
+                while (it.hasNext() && buscando) {
+                    Map.Entry e = (Map.Entry)it.next();
+                    if (padre.getCurrentRoom() == e.getValue()) {
+                        System.out.println("No salgas por la salida " + e.getKey() + " que está papá\n");
+                        buscando = false;
+                    }           
+                }
+                if (buscando) {
+                    System.out.println("Papá ahora mismo está en " + padre.getCurrentRoom().getDescription() + "\n");
+                }
+            }
+        }
     }
 }

@@ -26,7 +26,9 @@ public class Game
     private Player player;
     // Guarda las habitaciones para ir recolocando a los personajes
     private ArrayList<Room> rooms;
- 
+    // Atributo para el personaje del padre
+    private Personaje padre;
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -95,20 +97,50 @@ public class Game
 
         // Creamos el jugados y lo situamos en su habitación
         player = new Player(roomHijo);
-        colocarItems();
+        // Creamos al padre y lo colocamos en una habitación
+        padre = new Personaje("Padre",salaDeInvitados);    
+        // Colocamos los items en las habitaciones
+        colocarItems(salida);
 
+        // Creamos a los hermanos y los colocamos en habitaciones al azar
+        colocarHermanos(salida);
     }
 
     /**
-     * Coloca el item especial en una habitación al azar
+     * Metodo que crea y coloca a los hermanos en el juego
      */
-    private void recolocarEspecial(Item item)
+    private void colocarHermanos(Room room) 
+    {        
+        Room roomSituadoHermano = azarRoom(room);
+        Personaje hermano = new Personaje("hermano", roomSituadoHermano);
+        roomSituadoHermano.setPersonaje(hermano);
+        do {
+            roomSituadoHermano = azarRoom(room);
+        } while (hermano.getCurrentRoom() == roomSituadoHermano);
+        Personaje hermana = new Personaje("hermana", roomSituadoHermano);
+        roomSituadoHermano.setPersonaje(hermana);
+        // Les asignamos los items a cada uno
+        asignarItemHermanos(hermano, hermana);
+        asignarItemHermanos(hermana, hermano);
+    }
+
+    /**
+     * Asigna de forma aleatoria un item a cada hermano
+     */
+    private void asignarItemHermanos(Personaje personaje, Personaje hermano)
     {
-        if (item.getRef() == Item.REF_OBJETO_ESPECIAL) {
-            Random alternativo = new Random();
-            int numeroRooms = rooms.size();
-            // Recolocamos el objeto especial
-            rooms.get(alternativo.nextInt(numeroRooms)).addItem(item);
+        boolean asignadoItem = false;
+        Random aleatorio = new Random();
+        while (!asignadoItem) {
+            Room room = azarRoom(personaje.getCurrentRoom());
+            if ((!room.getItems().isEmpty())) {
+                Item item = room.getItems().get(aleatorio.nextInt(room.getItems().size()));
+                if ((hermano.getItem() != item) && (item.getRef() != Item.REF_OBJETO_ESPECIAL)
+                && item.getPuedeSerCogido()) {
+                    personaje.setItem(item);
+                    asignadoItem = true;
+                }
+            }         
         }
     }
 
@@ -116,24 +148,22 @@ public class Game
      *  Metodo que coloca los items por las habitaciones
      *  de manera aleatoria por las habitaciones
      */
-    private void colocarItems()
+    private void colocarItems(Room room)
     {
         // Creamos los items que vamos a colocar en las habitaciones
         // y los vamos añadiendo escojiendo las habitaciones al azahar
-        String[] nombresItems = {"refrescos", "cartera", "llaves", "pizzas", "bocadillos",
-                "hielos", "mochila", "portatil", "altavoces", "radioCD"};
+        String[] nombresItems = {"los refrescos", " la cartera", "las llaves", "las pizzas", "la bolsa de bocadillos",
+                "los hielos", " la mochila", "el portatil", " los altavoces", "el equipo de música"};
         float[] pesoItems = {2.5F, 0.3F, 0.2F, 2, 2, 1.2F, 1.8F, 1.5F, 1.3F, 1.7F};
+        // Se podrán coger solo 7 items
         ArrayList<Boolean> puedeCoger = new ArrayList<>(Arrays.asList(true, true,
                     true, true, true, true, true, false, false, false));
-
         Collections.shuffle(puedeCoger);
-        Random alternativo = new Random();
-        // Podemos coger los 7 primeros items y los otros no
-        int numeroRooms = rooms.size();
+
         // Añadimos el objeto especial
-        rooms.get(alternativo.nextInt(numeroRooms)).addItem(new Item("especial", 1, true));
+        azarRoom(room).addItem(new Item("Objeto especial", 1, true));
         for(int i = 0; i < nombresItems.length; i++) {
-            rooms.get(alternativo.nextInt(numeroRooms)).addItem(new Item(nombresItems[i], pesoItems[i], puedeCoger.get(i)));
+            azarRoom(room).addItem(new Item(nombresItems[i], pesoItems[i], puedeCoger.get(i)));
         } 
     }
 
@@ -163,7 +193,8 @@ public class Game
         System.out.println();
         System.out.println("Welcome to the jungle");
         System.out.println("World of jungle is a new, incredibly boring adventure game.");
-        System.out.println("Type '" + Option.HELP.getComando() + "' if you need help.");
+        System.out.println("Type '" + Option.HELP.getComando() + "' if you need help.\n");
+        System.out.println("¡¡¡ OJO !!!  No cojas la salida 'south', ahora mismo hay se encuentra tu padre\n");
         System.out.println();
         player.printLocationInfo();
     }
@@ -250,6 +281,33 @@ public class Game
         }
         else {
             return true;  // signal that we want to quit
+        }
+    }
+
+    /**
+     * Devuelve una habitación al azar
+     * Nunca será donde esta el jugador ni las pasadas como paramétros
+     */
+    private Room azarRoom(Room room)
+    {
+        Random alternativo = new Random();
+        int numeroRooms = rooms.size();
+        Room azarRoom = null;
+        do {
+            azarRoom = rooms.get(alternativo.nextInt(numeroRooms));
+        } while(azarRoom == player.getCurrentRoom() || azarRoom == room);
+        return azarRoom;
+    }
+
+    /**
+     * Coloca el item especial en una habitación al azar
+     */
+    private void recolocarEspecial(Item item)
+    {
+        if (item != null) {
+            if (item.getRef() == Item.REF_OBJETO_ESPECIAL) {
+                azarRoom(rooms.get(0)).addItem(item);
+            }
         }
     }
 }

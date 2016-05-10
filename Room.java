@@ -23,6 +23,9 @@ public class Room
     private HashMap<String, Room> salidas;
     // Almacena todos los items que puedan existir en la habitación
     private ArrayList<Item> items;
+    // Guarda el personje que está en la habitación
+    private Personaje personaje;
+    
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -89,12 +92,8 @@ public class Room
      */
     public String getLongDescription()
     {
-        String descripcionItems = "Items existentes: \n";
-        for (Item item : items) {
-            descripcionItems += item.getDescription() + "\n";
-        }
-        return "Te encuentras en " + description + "\n" 
-        + descripcionItems + "\n" + getExitString() + "\n";
+        return "Te encuentras en " + description + "\n" + nombrePersonaje()
+        + "\n" + itemsDescription() + "\n" + getExitString() + "\n";
     }
     
     /**
@@ -126,5 +125,49 @@ public class Room
             }
         }
         return item;
+    }
+    
+    /**
+     * Añade un personaje a la habitacion
+     */
+    public void setPersonaje(Personaje personaje)
+    {
+        this.personaje = personaje;
+    }
+    
+    /**
+     * Devuelve todos los items que hay en la habitación
+     */
+    public ArrayList<Item> getItems()
+    {
+        return items;
+    }
+    
+    /**
+     * Devuelve el nombre del personaje que se va ha mostrar en la descripción
+     */
+    private String nombrePersonaje()
+    {
+        String nombre = "no hay";
+        if (personaje != null) {
+            nombre = personaje.getNombre();
+        }
+        return "Personaje: " + nombre;
+    }
+    
+    /**
+     * Devuelve los items que hay en la habitación
+     * para mostrarlos en la descripción de la habitación
+     */
+    private String itemsDescription()
+    {
+        String descripcionItems = "";
+        for (Item item : items) {
+            descripcionItems += "\n" + item.getDescription();
+        }
+        if (descripcionItems.isEmpty()) {
+            descripcionItems = " no hay items";
+        }
+        return "Items existentes:" + descripcionItems + "\n";
     }
 }

@@ -220,8 +220,7 @@ public class Game
             break;
 
             case GO: 
-            player.goRoom(command);
-            break;
+            return accionMovimiento(player.goRoom(command));
 
             case QUIT: 
             wantToQuit = quit(command);
@@ -309,5 +308,52 @@ public class Game
                 azarRoom(rooms.get(0)).addItem(item);
             }
         }
+    }
+    
+    /**
+     * Recoloca al padre en una de las habitaciones al azar que 
+     * no puedrá ser en la que está el jugador actualmente
+     */
+    private void recolocarPadre()
+    {
+        padre.setCurrentRoom(azarRoom(null));
+    }
+    
+    /**
+     * Despues de realizar un movimiento, este método procesa la opciones devueltas
+     */
+    private boolean accionMovimiento(int valor)
+    {
+        boolean finalizarJuego = false;
+        if (player.getCurrentRoom() == padre.getCurrentRoom()) {
+            System.out.println("\n¡¡¡ TE PILLO TU PADRE !!!");
+            try
+            {
+                Thread.sleep(3000);
+            } 
+            catch (InterruptedException e)
+            {
+                // ignoring exception at the moment
+            }
+            Item item = player.posaItem(Item.REF_OBJETO_ESPECIAL);
+            if (item != null) {
+                System.out.println("Has tenido suerte, tenías el objeto especial y te has salvado\n");
+                recolocarEspecial(item);
+            }
+            else {                
+                System.out.println("GAME OVER");
+                finalizarJuego = true;
+            }
+        }
+        else if (player.getCurrentRoom().getDescription().equalsIgnoreCase("la salida")) {
+            System.out.println("¡¡¡FELICIDADES!!!");
+            System.out.println("\nLo has logrado, estás en la salida y ya puedes salir de fiesta");
+            System.out.println("GAME OVER");
+            finalizarJuego = true;
+        }
+        else if (valor == 0) {
+            recolocarPadre();
+        }
+        return finalizarJuego;
     }
 }

@@ -44,6 +44,7 @@ public class Game
 
     /**
      * Create all the rooms and link their exits together.
+     * Crea los personajes del juego y coloca los items
      */
     private void createRooms()
     {
@@ -110,7 +111,9 @@ public class Game
     }
 
     /**
-     * Metodo que crea y coloca a los hermanos en el juego
+     * Metodo que crea y coloca a los hermanos en el juego, siempre en habitaciones
+     * distintas y nunca ni en la habitación en la que se encuentra el jugador
+     * inicialmente ni en la salida
      */
     private void colocarHermanos(Room room) 
     {        
@@ -128,7 +131,8 @@ public class Game
     }
 
     /**
-     * Asigna de forma aleatoria un item a cada hermano
+     * Asigna de forma aleatoria un item a cada hermano, el item nunca será el mismo que 
+     * tiene el hermano, ni el objeto especial y siempre será uno que pueda ser cojido
      */
     private void asignarItemHermanos(Personaje personaje, Personaje hermano)
     {
@@ -148,8 +152,8 @@ public class Game
     }
 
     /*
-     *  Metodo que coloca los items por las habitaciones
-     *  de manera aleatoria por las habitaciones
+     *  Metodo que coloca los items de manera aleatoria por todas las habitaciones
+     *  excepto en la habitación donde se encuentra el jugador inicialmente ni en la salida
      */
     private void colocarItems(Room room)
     {
@@ -291,7 +295,7 @@ public class Game
 
     /**
      * Devuelve una habitación al azar
-     * Nunca será donde esta el jugador ni las pasadas como paramétros
+     * Nunca será donde esta el jugador ni la pasada como paramétro
      */
     private Room azarRoom(Room room)
     {
@@ -333,6 +337,7 @@ public class Game
         boolean finalizarJuego = false;
         if (player.getCurrentRoom() == padre.getCurrentRoom()) {
             System.out.println("\n¡¡¡ TE PILLO TU PADRE !!!");
+            // Ponemos un tiempo de espera para darle emoción
             try
             {
                 Thread.sleep(3000);
@@ -365,7 +370,9 @@ public class Game
     }
 
     /**
-     * Muestra la situación del padre
+     * Muestra la situación del padre si después de hablar con el personaje si este le ha
+     * llegado a dar la respuesta 4 que se supone que es donde le dice la salida que no
+     * debe de tomar o la situación del padre
      */
     private void mostrarSituacionPadre(Personaje personaje)
     {

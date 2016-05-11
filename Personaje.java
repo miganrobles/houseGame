@@ -73,14 +73,15 @@ public class Personaje
     }
 
     /**
-     * Permite contestar al jugador
+     * Permite hablar con el jugador cuando este entra en la habitación
+     * en la que se encuentra el personaje y habla con él
      */
     public boolean charlar(String frase)
     {
         boolean charlar = true;
         if (numRespuestas > 0) {
             if (respuesta == 1) {
-                intruccioneIniciales();
+                intruccionesIniciales();
                 respuesta++;
                 charlar = false;
             }
@@ -134,7 +135,7 @@ public class Personaje
      * Instrucciones inciales que deberá seguir el jugador 
      * para que el personaje le acabe dando la información sobre el padre
      */
-    private void intruccioneIniciales()
+    private void intruccionesIniciales()
     {
         System.out.println("Hola tato, me traes " + item.getNombre() + ", \nrevisa tu mochila y luego deverás " +
             "decirme solo 'si' en caso de que la tengas o 'no' en caso que no."  

@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.text.DecimalFormat;
 import java.util.Stack;
+import java.util.Scanner;
 
 /**
  * Write a description of class Player here.
@@ -22,6 +23,10 @@ public class Player
     private Room roomEspecial;
     // Pesso máximo que puede llevar el jugador
     public static final int PESO_MAXIMO_PUEDE_COJER = 5;
+    // Guarda el número de movimientos que realiza el jugador
+    private int numMovimientos;
+    // Numero de movimientos para recolocar al padre
+    public static final int NUM_MOVIMIENTOS_RECOLOCAR_PADRE = 2;
 
     /**
      * Constructor for objects of class Player
@@ -33,6 +38,7 @@ public class Player
         itemsCogidos = new ArrayList<>();
         backRooms = new Stack<>();
         roomEspecial = null;
+        numMovimientos = 0;
     }
 
     /**
@@ -55,42 +61,49 @@ public class Player
      * Try to go in one direction. If there is an exit, enter
      * the new room, otherwise print an error message.
      */
-    public void goRoom(Command command) 
+    public int goRoom(Command command) 
     {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             System.out.println("Go where?\n");
-            return;
+            return 1;
         }
 
         String direction = command.getSecondWord();
 
         // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!\n");
-        }
-        else {
+        int valorDevuelto = 1;
+        if (nextRoom != null) {
+            numMovimientos++;
+            valorDevuelto = numMovimientos % NUM_MOVIMIENTOS_RECOLOCAR_PADRE;
             backRooms.push(currentRoom);
             currentRoom = nextRoom;
             printLocationInfo();
         }
+        else {
+            System.out.println("There is no door!\n");
+        }
+        return valorDevuelto;
     }
 
     /**
      * Regresa a la habitación anterior donde hemos estado
      * Si no hay ninguna anterior muestra un mensage
      */
-    public void goBackRoom()
+    public int goBackRoom()
     {
-        if (backRooms.empty()) {
-            System.out.println("No es posible volver a la localización anterior\n");
+        int valorDevuelto = 1;
+        if (!backRooms.empty()) {
+            numMovimientos++;
+            valorDevuelto = numMovimientos % NUM_MOVIMIENTOS_RECOLOCAR_PADRE;
+            currentRoom = backRooms.pop();
+            printLocationInfo();            
         }
         else {
-            currentRoom = backRooms.pop();
-            printLocationInfo();
+            System.out.println("No es posible volver a la localización anterior\n");
         }
+        return valorDevuelto;
     }
 
     /**
@@ -183,29 +196,35 @@ public class Player
      * Permite dejar un item de los que tiene en la habitación 
      * en la que se encuentra
      */
-    private Item posaItem(int numRef)
+    public Item posaItem(int numRef)
     {
         Item item = null;
         boolean buscando = true;
         int numeroItems = itemsCogidos.size();
         for (int i = 0; i < numeroItems && buscando; i++) {
             if (itemsCogidos.get(i).getRef() == numRef) {
+                item = itemsCogidos.remove(i);
                 buscando = false;
-                pesoPuedeLlevar += itemsCogidos.get(i).getPeso();
-                System.out.println("Posado item:   " + itemsCogidos.get(i).getDescription());
+                pesoPuedeLlevar += item.getPeso();
+                System.out.println("Posado item:   " + item.getDescription());
+                System.out.println();
                 if (numRef == Item.REF_OBJETO_ESPECIAL) {
                     currentRoom = roomEspecial;
                     roomEspecial = null;
-                    item = itemsCogidos.remove(i);
+                    printLocationInfo();
                 }
                 else {
-                    item = itemsCogidos.remove(i);
                     currentRoom.addItem(item);
                 } 
             }
         }
         if (buscando) {
-            System.out.println("No tienes el item con referencia " + numRef);
+            if (numRef == 1) {
+                System.out.println("No tienes el objeto especial");
+            }
+            else {
+                System.out.println("No tienes el item con referencia " + numRef);
+            }
         }
         return item;
     }
@@ -229,5 +248,38 @@ public class Player
     public void printLocationInfo()
     {
         System.out.println(currentRoom.getLongDescription());
-    }    
+    }
+    
+    /**
+     * Permite hablar al jugador con otros personajes del juego
+     * retorna el personaje con el que hemos hablado
+     */
+    public Personaje talk()
+    {
+        Personaje personaje = currentRoom.getPersonaje();
+        if (personaje != null) {
+            if (personaje.getNumRespuestas() > 0) {
+                if (personaje.getRespuesta() <= 4) {
+                    boolean charlar = true;
+                    Scanner teclado = new Scanner(System.in);
+                    teclado.useDelimiter("\n");
+                    while (charlar) {
+                        charlar = personaje.charlar(teclado.next());
+                    }
+                }
+            }
+            else {
+                if (personaje.getRespuesta() == 4) {
+                    personaje.incrementaRespuesta();
+                }
+                System.out.println("Has agotado tus " + Personaje.MUMERO_MAXIMO_DE_RESPUESTAS + 
+                    " oportunidades, tu " + personaje.getNombre() + " te ha echado de la habitación por pesado");
+                goBackRoom();
+            }
+        }
+        else {
+            System.out.println("En esta habitación no hay nadie con quien poder hablar\n");
+        }
+        return personaje;
+    }
 }

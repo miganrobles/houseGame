@@ -264,7 +264,7 @@ public class Player
                     Scanner teclado = new Scanner(System.in);
                     teclado.useDelimiter("\n");
                     while (charlar) {
-                        charlar = personaje.charlar(teclado.next());
+                        charlar = personaje.charlar(teclado.nextLine());
                     }
                 }
             }

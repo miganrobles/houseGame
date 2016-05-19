@@ -354,6 +354,14 @@ public class Game
             }
             else {                
                 System.out.println("-----GAME OVER-----");
+                try
+                {
+                    Thread.sleep(3000);
+                } 
+                catch (InterruptedException e)
+                {
+                    // ignoring exception at the moment
+                }
                 finalizarJuego = true;
             }
         }
@@ -361,6 +369,14 @@ public class Game
             System.out.println("¡¡¡FELICIDADES!!!");
             System.out.println("\nLo has logrado, estás en la salida y ya puedes salir de fiesta");
             System.out.println("-----GAME OVER-----");
+            try
+            {
+                Thread.sleep(3000);
+            } 
+            catch (InterruptedException e)
+            {
+                // ignoring exception at the moment
+            }
             finalizarJuego = true;
         }
         else if (valor == 0) {
